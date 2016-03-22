@@ -1,0 +1,18 @@
+<section>
+	<h2>name of my app goes here</h2>
+	<h4>short line of text about the app</h4>
+
+	<div class="inputs">
+		<div>
+			<label for="username">Username:</label>
+			<input type="email" name="username" ng-model="user.email">
+		</div>
+		<div>
+			<label for="password">Password:</label>
+			<input type="password" name="password" ng-model="user.password">
+		</div>
+		<button id="login" ng-click="login(user)">Log In</button>
+		<button id="register" ng-click="register(user)">Register</button>
+	</div>
+
+</section>

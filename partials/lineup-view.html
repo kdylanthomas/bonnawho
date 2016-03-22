@@ -1,0 +1,6 @@
+<section>
+	<div ng-repeat="artist in lineup">
+		<h5>{{ artist.artist }}</h5>
+		<button id="{{ artist.key }}" ng-click="buildArtistObject($event)">Add To List</button>
+	</div>
+</section>
