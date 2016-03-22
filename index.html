@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Front End Capstone</title>
+</head>
+<body ng-app="capstone">
+	<div ng-view></div>
+
+	<!-- DEPENDENCIES -->
+	<script src="lib/bower_components/angular/angular.js"></script>
+	<script src="lib/bower_components/angular-route/angular-route.min.js"></script>
+	<script src="lib/bower_components/firebase/firebase.js"></script>
+	<script src="lib/bower_components/angularfire/dist/angularfire.min.js"></script>
+
+	<!-- APP COMPONENTS -->
+	<script src="app/app.js"></script>
+	<script src="app/factories/authenticate.js"></script>
+	<script src="app/factories/getLineup.js"></script>
+	<script src="app/factories/getUser.js"></script>
+	<script src="app/factories/getList.js"></script>
+	<script src="app/controllers/LoginCtrl.js"></script>
+	<script src="app/controllers/LineupCtrl.js"></script>
+
+</body>
+</html>
