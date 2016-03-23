@@ -11,9 +11,11 @@ app.controller("LineupCtrl", [
 
 	function ($scope, getLineup, authenticate, getUser, $http, firebaseURL, getList) {
 
-		let user = authenticate.getUser();
+		let user = authenticate.getCurrentUser();
 		let currentUserData;
+		let list;
 		let chosenArtist = "";
+
 
 		let artistToAdd = {
 			name: "",
@@ -31,39 +33,43 @@ app.controller("LineupCtrl", [
 			return arr;
 		}
 
-		// Get lineup from mock API
+		// Get lineup from mock API & output to DOM as $scope.lineup
 		getLineup()
 		.then(
 			lineupData => {
+				// for (let artist in lineupData) {
+				// 	lineupData[artist].addedByUser = false;
+				// }
 				$scope.lineup = convertObjToArray(lineupData);
 			},
 			error => console.log(error)
 		);
 
 		// when user clicks "add", build out an artist obj to add based on event target ID
-		$scope.buildArtistObject = function (event) {
+		$scope.buildArtistObject = function (event, index) {
+			// $scope.lineup[index].addedByUser = true;
 			chosenArtist = event.target.id;
 			artistToAdd.name = chosenArtist;
-			// next, see if there is a list to add this artist to
-			// ?? is it ideal to keep passing this artistToAdd obj down several functions?
+			// after artist object is constructed, find current user's list
 			$scope.findUserList();
 		}
 
+
 		$scope.findUserList = function () {
-			let list;
-			// request user data each time list needs to be found, to account for new users
+			// request user data each time list needs to be found, to account for list updates
 			getUser(user.uid)
 			.then(
 				userData => {
 					currentUserData = userData;
 					for (let key in currentUserData) {
-						// if so, assign their list ID to the list variable; if not, let list = null
+						// if user has a list, assign their list ID to the list variable
 						if (currentUserData[key].list) {
 							list = currentUserData[key].list;
 						} else {
 							console.log('no list exists for ' + currentUserData[key].uid);
 							list = null;
 						}
+						// once list is defined (or not found), add artist to that list
 						$scope.addArtistToList(list);
 					}
 				},
@@ -76,52 +82,50 @@ app.controller("LineupCtrl", [
 			let searchParam = artistToAdd.name;
 			// *** IF USER DOES NOT YET HAVE A LIST (i.e. this is the user's first artist addition):
 			if (!list) {
-				// post object to lists table (this creates a new list object)
-				// first artist added will be named artistToAdd...is this fine?
+				// post object to lists data (this creates a new list object)
 				$http.post(`${firebaseURL}lists/.json`, {artistToAdd})
 				.then(
-					// use the search param to get the list that the artist was just added to
-					// !! will this be a problem in the future, e.g. if two users add the same artist first?
+					// use the search param to get the list containing the most recently added artist
 					() => getList(searchParam),
 					error => console.log(error)
-				)
-				.then(
+				).then(
 					listData => {
 						// grab key associated with a user's list and pass it into assignList fn
 						for (let key in listData) {
 							list = key;
 						}
-						// only assign list based on last object in listData, which should be most recently added one
+						// assign user their list: (accounts for multiple users adding same artist first)
+						// only assign list based on last object in listData, which is the most recently added one
 						assignListToUser(list);
 					},
 					error => console.log('error', error)
 				)
-
 			// *** IF USER HAS EXISTING LIST:
 			} else {
-				// post artist to their list
 				$http.post(`${firebaseURL}lists/${list}/.json`, artistToAdd)
 				.success(
 					data => console.log(data),
 					error => console.log(error)
 				)
-				console.log(list);
+			console.log(list);
 			}
-		}
 
+			// firebase query to access all user's artist selections from database
+			// this should probably be a factory so i can use it on lists page
+				let ref = new Firebase(`${firebaseURL}lists/${list}`);
+				let currentUserArtists = [];
+				ref.orderByChild('name').on('child_added', function (snapshot) {
+					console.log(snapshot.key() + ' is ' + snapshot.val().name);
+					currentUserArtists.push(snapshot.val().name);
+				});
+			}
+
+
+		// attaches list ID as property of a user
 		let assignListToUser = (listID) => {
 			for (let key in currentUserData) {
 				let userRef = new Firebase(`${firebaseURL}users/${key}`);
 				userRef.update({list: listID});
-			}
-		}
-
-		// currently disables click only for most recently added artist
-		$scope.isClicked = function (index, artist) {
-			if (chosenArtist === artist.key) {
-				return true;
-			} else {
-				return false;
 			}
 		}
 
