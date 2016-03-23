@@ -16,7 +16,6 @@ app.controller("LineupCtrl", [
 		let list;
 		let chosenArtist = "";
 
-
 		let artistToAdd = {
 			name: "",
 			listened: false,
