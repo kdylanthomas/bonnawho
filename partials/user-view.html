@@ -1,3 +1,4 @@
+<div ng-include="'partials/navbar.html'" ng-init="checkPath()"></div>
 <section ng-init="populateList()">
 	<div ng-repeat="artist in currentUserArtists">
 		<p>{{ artist.artist }}</p>
