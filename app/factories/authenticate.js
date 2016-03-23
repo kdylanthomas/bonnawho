@@ -18,7 +18,7 @@ app.factory('authenticate', function (firebaseURL, $q, $http) {
 		}
 	}
 
-	Authenticate.getUser = () => {
+	Authenticate.getCurrentUser = () => {
 		return currentUserData;
 	}
 
