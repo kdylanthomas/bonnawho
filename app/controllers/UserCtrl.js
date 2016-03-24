@@ -6,12 +6,14 @@ app.controller("UserCtrl", [
 	"get-user",
 	"firebaseURL",
 	"get-artist",
+	"$q",
 	"$http",
 
-	function ($scope, authenticate, getUser, firebaseURL, getArtist, $http) {
+	function ($scope, authenticate, getUser, firebaseURL, getArtist, $q, $http) {
 
-		let user = authenticate.getCurrentUser();
-		let list;
+		let user = authenticate.getCurrentUser(); // holds firebase authData object
+		let artistToUpdate; // holds unique firebase-generated key for an artist object inside a user's list object
+		let list; // holds unique firebase-generated key that corresponds to a user's list
 
 		$scope.populateList = () => {
 			$scope.currentUserArtists = [];
@@ -20,7 +22,6 @@ app.controller("UserCtrl", [
 				userData => {
 					for (let user in userData) {
 						list = userData[user].list;
-						console.log(list);
 					}
 					let ref = new Firebase(`${firebaseURL}lists/${list}`);
 					// this returns each artist key that has been added to a user's list
@@ -42,42 +43,55 @@ app.controller("UserCtrl", [
 			)
 		}
 
-		$scope.updateUserList = function (event, action) {
-			let artistToUpdate = event.target.className;
-			let keyToSearch;
-			let listItemURL;
+		$scope.buildListURL = function (artistToUpdate) {
+			return $q((resolve, reject) => {
+				$http.get(`${firebaseURL}lists/${list}/.json`)
+				.success(
+					data => {
+						// find the object in the list that contains the artist the user wants to update/delete
+						for (let key in data) {
+							// build URL for the matching artist object inside a user's list
+							if (data[key].name === artistToUpdate) {
+								let listItemURL = `${firebaseURL}lists/${list}/${key}/`;
+								return resolve(listItemURL);
+							}
+						};
+					},
+					error => reject(error)
+				)
+			})
+		}
 
-			console.log(artistToUpdate);
-			// gets the user's list
-			$http.get(`${firebaseURL}lists/${list}/.json`)
-			.success(
-				data => {
-					// find the object in the list that contains the artist the user clicked
-					for (let key in data) {
-						if (data[key].name === artistToUpdate) {
-							keyToSearch = key;
-						}
-						// build URL for artist object inside a user's list
-						listItemURL = `${firebaseURL}lists/${list}/${keyToSearch}/`;
-					};
-					if (action === 'delete') {
-						$http.delete(`${listItemURL}.json`)
+		$scope.updateListened = function (event) {
+			artistToUpdate = event.target.className;
+			$scope.buildListURL(artistToUpdate)
+			.then(
+				url => {
+					let listItemRef = new Firebase(url);
+					listItemRef.update({listened: true});
+				},
+				error => console.log(error)
+			)
+		}
+
+		$scope.deleteArtist = function (event) {
+			artistToUpdate = event.target.className;
+			$scope.buildListURL(artistToUpdate)
+			.then(
+				url => {
+					console.log(url);
+					$http.delete(`${url}.json`)
 						.success(
 							() => {
 								console.log(`you deleted ${artistToUpdate}`);
 								$scope.populateList();
 							},
 							error => console.log(error)
-							)
-					} else if (action === 'update') {
-						let listItemRef = new Firebase(listItemURL);
-						listItemRef.update({listened: true});
-					}
+						)
 				},
 				error => console.log(error)
 			)
 		}
-
 
 	}]
 )
