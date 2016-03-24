@@ -108,16 +108,7 @@ app.controller("LineupCtrl", [
 				)
 			console.log(list);
 			}
-
-			// firebase query to access all user's artist selections from database
-			// this should probably be a factory so i can use it on lists page
-				let ref = new Firebase(`${firebaseURL}lists/${list}`);
-				let currentUserArtists = [];
-				ref.orderByChild('name').on('child_added', function (snapshot) {
-					console.log(snapshot.key() + ' is ' + snapshot.val().name);
-					currentUserArtists.push(snapshot.val().name);
-				});
-			}
+		}
 
 
 		// attaches list ID as property of a user

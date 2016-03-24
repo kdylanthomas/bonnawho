@@ -2,7 +2,7 @@
 <section ng-init="populateList()">
 	<div ng-repeat="artist in currentUserArtists">
 		<p>{{ artist.artist }}</p>
-		<button class="{{ artist.key }}" ng-click="updateUserList($event, 'update')">Listened</button>
-		<button class="{{ artist.key }}" ng-click="updateUserList($event, 'delete')">Delete This Artist</button>
+		<button class="{{ artist.key }}" ng-click="updateListened($event)">Listened</button>
+		<button class="{{ artist.key }}" ng-click="deleteArtist($event)">Delete This Artist</button>
 	</div>
 </section>
