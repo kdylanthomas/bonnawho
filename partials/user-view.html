@@ -1,8 +1,18 @@
 <div ng-include="'partials/navbar.html'" ng-init="checkPath()"></div>
 <section ng-init="populateList()">
-	<div ng-repeat="artist in currentUserArtists">
-		<p>{{ artist.artist }}</p>
-		<button class="{{ artist.key }}" ng-click="updateListened($event)">Listened</button>
-		<button class="{{ artist.key }}" ng-click="deleteArtist($event)">Delete This Artist</button>
+
+	<div class="panel panel-default" ng-repeat="artist in currentUserArtists">
+	  <div class="panel-heading">
+	    <h3 class="panel-title" style="display:inline-block">{{ artist.artist }}</h3>
+	    <button class="{{ artist.key }}" ng-show="!isShowing($index)" ng-click="showDetail($index, $event)">More</button>
+	    <button class="{{ artist.key }}" ng-show="isShowing($index)" ng-click="hideDetail()">Less</button>
+	  </div>
+	  <div class="panel-body" ng-show="isShowing($index)">
+	  	<!-- place artist detail in new view/controller? -->
+	  	<div ng-include="'partials/artist-info.html'"></div>
+			<button class="{{ artist.key }}" ng-click="updateListened($event)">Listened</button>
+			<button class="{{ artist.key }}" ng-click="deleteArtist($event)">Delete This Artist</button>
+	  </div>
 	</div>
+
 </section>

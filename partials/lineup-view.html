@@ -2,6 +2,6 @@
 <section>
 	<div ng-repeat="artist in lineup">
 		<h5>{{ artist.artist }}</h5>
-		<button id="{{ artist.key }}" ng-disabled="addedByUser===true" ng-click="buildArtistObject($event, $index)">Add To List</button>
+		<button id="{{ artist.key }}" ng-click="buildArtistObject($event, $index)">Add To List</button>
 	</div>
 </section>

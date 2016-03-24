@@ -8,12 +8,15 @@ app.controller("UserCtrl", [
 	"get-artist",
 	"$q",
 	"$http",
+	"conduit",
 
-	function ($scope, authenticate, getUser, firebaseURL, getArtist, $q, $http) {
+	function ($scope, authenticate, getUser, firebaseURL, getArtist, $q, $http, conduit) {
 
 		let user = authenticate.getCurrentUser(); // holds firebase authData object
 		let artistToUpdate; // holds unique firebase-generated key for an artist object inside a user's list object
 		let list; // holds unique firebase-generated key that corresponds to a user's list
+
+		$scope.detailsVisible = false;
 
 		$scope.populateList = () => {
 			$scope.currentUserArtists = [];
@@ -92,6 +95,22 @@ app.controller("UserCtrl", [
 				error => console.log(error)
 			)
 		}
+
+		// Show or hide list item detail on click
+		$scope.showDetail = function (index, event) {
+			let currArtist = event.target.className;
+		  conduit.setSearchParams(currArtist);
+			$scope.activeIndex = index;
+		}
+
+		$scope.hideDetail = function () {
+			$scope.activeIndex = null;
+		}
+
+		$scope.isShowing = function (index) {
+			return $scope.activeIndex === index;
+		}
+
 
 	}]
 )

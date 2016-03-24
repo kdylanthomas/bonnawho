@@ -19,7 +19,7 @@ app.controller("LineupCtrl", [
 		let artistToAdd = {
 			name: "",
 			listened: false,
-			rating: 0
+			rating: null
 		}
 
 		// Convert data to array and return array--will define $scope.lineup && $scope.users
@@ -118,6 +118,13 @@ app.controller("LineupCtrl", [
 				userRef.update({list: listID});
 			}
 		}
+
+		// TODO: disable add buttons for artists already on user list
+		// get list of artists in user's list (use artist keys)
+		// compile array of those artists
+		// if add button ID matches any item in the array,
+		// disable the add button
+
 
 	}]
 );
