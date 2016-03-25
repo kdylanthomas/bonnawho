@@ -3,15 +3,13 @@
 
 	<div class="panel panel-default" ng-repeat="artist in currentUserArtists">
 	  <div class="panel-heading">
-	    <h3 class="panel-title" style="display:inline-block">{{ artist.artist }}</h3>
-	    <button class="{{ artist.key }}" ng-show="!isShowing($index)" ng-click="showDetail($index, $event)">More</button>
-	    <button class="{{ artist.key }}" ng-show="isShowing($index)" ng-click="hideDetail()">Less</button>
+	    <h3 class="panel-title" style="display:inline-block">{{ artist.artistName }}</h3>
+	    <button class="{{ artist.artistID }}" ng-show="!isShowing($index)" ng-click="showDetail($index, artist.artistID)">More</button>
+	    <button class="{{ artist.artistID }}" ng-show="isShowing($index)" ng-click="hideDetail()">Less</button>
 	  </div>
 	  <div class="panel-body" ng-show="isShowing($index)">
-	  	<!-- place artist detail in new view/controller? -->
-	  	<div ng-include="'partials/artist-info.html'"></div>
-			<button class="{{ artist.key }}" ng-click="updateListened($event)">Listened</button>
-			<button class="{{ artist.key }}" ng-click="deleteArtist($event)">Delete This Artist</button>
+			<button class="{{ artist.artistID }}" ng-click="updateListened(artist.artistID)">Listened</button>
+			<button class="{{ artist.artistID }}" ng-click="deleteArtist(artist.artistID)">Delete This Artist</button>
 	  </div>
 	</div>
 

@@ -2,14 +2,13 @@
 
 app.factory('get-list', function ($q, $http, firebaseURL) {
 	// returns a list that contains the artist first added to it
-	let getList = function (searchParam) {
+	let getList = function (list) {
 		return $q((resolve, reject) => {
-			let url = `${firebaseURL}lists/.json`;
-			if (searchParam) {
-				url += `?orderBy="artistToAdd/name"&equalTo="${searchParam}"`;
+			let url = `${firebaseURL}lists`;
+			if (list) {
+				url += `/${list}`;
 			}
-			console.log(url);
-			$http.get(url)
+			$http.get(`${url}/.json`)
 			.success(
 				listData => resolve(listData),
 				error => reject(error)
