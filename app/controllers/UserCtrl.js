@@ -8,16 +8,19 @@ app.controller("UserCtrl", [
 	"get-artist",
 	"$q",
 	"$http",
-	"conduit",
 	"get-list",
 
-	function ($scope, authenticate, getUser, firebaseURL, getArtist, $q, $http, conduit, getList) {
+	function ($scope, authenticate, getUser, firebaseURL, getArtist, $q, $http, getList) {
 
 		let user = authenticate.getCurrentUser(); // holds firebase authData object
 		let artistToUpdate; // holds unique firebase-generated key for an artist object inside a user's list object
 		let list; // holds unique firebase-generated key that corresponds to a user's list
 
 		$scope.detailsVisible = false;
+
+		$scope.currArtistDetail = {
+			day: "",
+		}
 
 		let getSpotifyData = (artist) => {
 			artist = artist.replace(/ /g, '+');
@@ -32,6 +35,7 @@ app.controller("UserCtrl", [
 		}
 
 		$scope.populateList = () => {
+			$scope.activeIndex = null;
 			$scope.currentUserArtists = [];
 			getUser(user.uid)
 			.then(
@@ -87,9 +91,8 @@ app.controller("UserCtrl", [
 			)
 		}
 
-		$scope.deleteArtist = function (event) {
-			artistToUpdate = event.target.className;
-			$scope.buildListURL(artistToUpdate)
+		$scope.deleteArtist = function (id) {
+			$scope.buildListURL(id)
 			.then(
 				url => {
 					console.log(url);
@@ -112,6 +115,7 @@ app.controller("UserCtrl", [
 			.then(
 				artistData => {
 					console.log(artistData);
+					$scope.currArtistDetail.day = artistData.day;
 					$scope.activeIndex = index;
 				},
 				err => console.log(err)
@@ -125,7 +129,6 @@ app.controller("UserCtrl", [
 		$scope.isShowing = function (index) {
 			return $scope.activeIndex === index;
 		}
-
 
 	}]
 )
