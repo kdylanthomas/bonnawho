@@ -25,6 +25,7 @@ app.controller("LineupCtrl", [
 			comments: ""
 		}
 
+		// store a user's already-added artists--get this data immediately after getting lineup data
 		$scope.userSavedArtists = [];
 
 		$scope.getArtistsOnList = () => {
@@ -163,6 +164,20 @@ app.controller("LineupCtrl", [
 					$scope.alreadyAdded = true;
 				}
 			})
+		}
+
+		$scope.sortByHeadliners = () => {
+			$scope.lineup.sort(function (obj1, obj2) {
+				return obj1.billing - obj2.billing;
+			})
+		}
+
+		$scope.sortAtoZ = () => {
+			getLineup()
+			.then(
+				data => $scope.lineup = convertObjToArray(data),
+				err => console.log(err)
+			)
 		}
 
 	}]
