@@ -21,7 +21,24 @@ app.controller("LineupCtrl", [
 			artistID: "",
 			artistName: "",
 			listened: false,
-			rating: 0
+			rating: 0,
+			comments: ""
+		}
+
+		$scope.userSavedArtists = [];
+
+		$scope.getArtistsOnList = () => {
+			if (list) {
+				console.log(`${firebaseURL}lists/${list}`);
+				let ref = new Firebase(`${firebaseURL}lists/${list}`);
+				// this returns each artist key that has been added to a user's list
+				ref.orderByChild('name').on('child_added', function (snapshot) {
+					let currentArtist = snapshot.val().artistName;
+					$scope.userSavedArtists.push(currentArtist);
+				});
+			} else {
+				$scope.userSavedArtists = [];
+			}
 		}
 
 		// Convert data to array and return array--will define $scope.lineup && $scope.users
@@ -34,11 +51,22 @@ app.controller("LineupCtrl", [
 			return arr;
 		}
 
+		getUser(user.uid)
+		.then(
+			userData => {
+				for (let key in userData) {
+					list = userData[key].list;
+					return getLineup();
+				}
+			},
+			err => console.log(err)
+		)
 		// Get lineup from mock API & output to DOM as $scope.lineup
-		getLineup()
+
 		.then(
 			lineupData => {
 				$scope.lineup = convertObjToArray(lineupData);
+				$scope.getArtistsOnList();
 			},
 			error => console.log(error)
 		);
@@ -89,7 +117,10 @@ app.controller("LineupCtrl", [
 				$http.post(`${firebaseURL}lists/.json`, {artistToAdd})
 				.then(
 					// use the search param to get the list containing the most recently added artist
-					() => getNewUserList(searchParam),
+					() => {
+						$scope.alreadyAdded = true;
+						getNewUserList(searchParam);
+					},
 					error => console.log(error)
 				).then(
 					listData => {
@@ -107,28 +138,32 @@ app.controller("LineupCtrl", [
 			} else {
 				$http.post(`${firebaseURL}lists/${list}/.json`, artistToAdd)
 				.success(
-					data => console.log(data),
+					data => $scope.alreadyAdded = true,
 					error => console.log(error)
 				)
 			console.log(list);
 			}
 		}
 
-
 		// attaches list ID as property of a user
-		let assignListToUser = (listID) => {
+		let assignListToUser = function (listID) {
 			for (let key in currentUserData) {
 				let userRef = new Firebase(`${firebaseURL}users/${key}`);
 				userRef.update({list: listID});
 			}
 		}
 
-		// TODO: disable add buttons for artists already on user list
-		// get list of artists in user's list (use artist keys)
-		// compile array of those artists
-		// if add button ID matches any item in the array,
-		// disable the add button
-
+		// uses stored array of user's saved artists to disable "add" buttons of artists already added
+		$scope.checkAgainstUserList = function (artistName) {
+			$scope.alreadyAdded = false;
+			console.log(artistName);
+			let arr = $scope.userSavedArtists;
+			arr.forEach((el, i) => {
+				if (el === artistName) {
+					$scope.alreadyAdded = true;
+				}
+			})
+		}
 
 	}]
 );

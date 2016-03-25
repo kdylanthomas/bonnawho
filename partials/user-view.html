@@ -8,6 +8,7 @@
 	    <button class="{{ artist.artistID }}" ng-show="isShowing($index)" ng-click="hideDetail()">Less</button>
 	  </div>
 	  <div class="panel-body" ng-show="isShowing($index)">
+	  	<div>Playing: {{ currArtistDetail.day }}</div>
 			<button class="{{ artist.artistID }}" ng-click="updateListened(artist.artistID)">Listened</button>
 			<button class="{{ artist.artistID }}" ng-click="deleteArtist(artist.artistID)">Delete This Artist</button>
 	  </div>

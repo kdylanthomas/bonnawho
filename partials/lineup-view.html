@@ -1,7 +1,50 @@
 <div ng-include="'partials/navbar.html'" ng-init="checkPath()"></div>
+
 <section>
-	<div ng-repeat="artist in lineup">
-		<h5>{{ artist.artist }}</h5>
-		<button id="{{ artist.key }}" ng-click="buildArtistObject($event, $index)">Add To List</button>
+
+	<div class="dropdown">
+	  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+	    Sort by...
+	    <span class="caret"></span>
+	  </button>
+	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+	    <li><a>Alphabetical</a></li>
+	    <li><a>Headliners First</a></li>
+	    <li><a>By Day</a></li>
+	  </ul>
 	</div>
+
+	<div class="panel panel-default" ng-repeat="artist in lineup">
+
+		<!-- basic panel -->
+  	<div class="panel-body">
+   		<h5 style="display:inline-block">{{ artist.artist }}</h5>
+   		<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal--{{artist.key}}" ng-click="checkAgainstUserList(artist.artist)">
+  		+
+			</button>
+  	</div>
+
+  	<!-- modal -->
+		<div class="modal fade" id="modal--{{artist.key}}" tabindex="-1" role="dialog">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">{{ artist.artist }}</h4>
+		      </div>
+		      <div class="modal-body">
+		        <p>{{ artist.description }}</p>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button ng-if="alreadyAdded===true" type="button" disabled="disabled" class="btn btn-default" id="{{ artist.key }}">Added!</button>
+		        <button ng-if="!alreadyAdded" type="button" class="btn btn-default" id="{{ artist.key }}" ng-click="buildArtistObject($event, $index)">Add To List</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+	</div>
+
+
 </section>
