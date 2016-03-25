@@ -7,9 +7,10 @@ app.controller("LineupCtrl", [
 	"get-user",
 	"$http",
 	"firebaseURL",
-	"get-list",
+	"get-new-user-list",
+	"get-artist",
 
-	function ($scope, getLineup, authenticate, getUser, $http, firebaseURL, getList) {
+	function ($scope, getLineup, authenticate, getUser, $http, firebaseURL, getNewUserList, getArtist) {
 
 		let user = authenticate.getCurrentUser();
 		let currentUserData;
@@ -17,9 +18,10 @@ app.controller("LineupCtrl", [
 		let chosenArtist = "";
 
 		let artistToAdd = {
-			name: "",
+			artistID: "",
+			artistName: "",
 			listened: false,
-			rating: null
+			rating: 0
 		}
 
 		// Convert data to array and return array--will define $scope.lineup && $scope.users
@@ -36,9 +38,6 @@ app.controller("LineupCtrl", [
 		getLineup()
 		.then(
 			lineupData => {
-				// for (let artist in lineupData) {
-				// 	lineupData[artist].addedByUser = false;
-				// }
 				$scope.lineup = convertObjToArray(lineupData);
 			},
 			error => console.log(error)
@@ -48,7 +47,12 @@ app.controller("LineupCtrl", [
 		$scope.buildArtistObject = function (event, index) {
 			// $scope.lineup[index].addedByUser = true;
 			chosenArtist = event.target.id;
-			artistToAdd.name = chosenArtist;
+			artistToAdd.artistID = chosenArtist;
+			getArtist(chosenArtist)
+			.then(
+				data => artistToAdd.artistName = data.artist,
+				err => console.log(err)
+			);
 			// after artist object is constructed, find current user's list
 			$scope.findUserList();
 		}
@@ -85,7 +89,7 @@ app.controller("LineupCtrl", [
 				$http.post(`${firebaseURL}lists/.json`, {artistToAdd})
 				.then(
 					// use the search param to get the list containing the most recently added artist
-					() => getList(searchParam),
+					() => getNewUserList(searchParam),
 					error => console.log(error)
 				).then(
 					listData => {

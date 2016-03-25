@@ -9,8 +9,9 @@ app.controller("UserCtrl", [
 	"$q",
 	"$http",
 	"conduit",
+	"get-list",
 
-	function ($scope, authenticate, getUser, firebaseURL, getArtist, $q, $http, conduit) {
+	function ($scope, authenticate, getUser, firebaseURL, getArtist, $q, $http, conduit, getList) {
 
 		let user = authenticate.getCurrentUser(); // holds firebase authData object
 		let artistToUpdate; // holds unique firebase-generated key for an artist object inside a user's list object
@@ -18,31 +19,39 @@ app.controller("UserCtrl", [
 
 		$scope.detailsVisible = false;
 
+		let getSpotifyData = (artist) => {
+			artist = artist.replace(/ /g, '+');
+			let spotifyQuery = `q=${artist}&type=artist`;
+			$http.get(`https://api.spotify.com/v1/search?${spotifyQuery}`)
+			.success(
+				data => {
+					$scope.smallVictory = data.artists.items[0].images[0].url;
+				},
+				err => console.log(err)
+			)
+		}
+
 		$scope.populateList = () => {
 			$scope.currentUserArtists = [];
 			getUser(user.uid)
 			.then(
+				// get the user's list key
 				userData => {
 					for (let user in userData) {
 						list = userData[user].list;
 					}
-					let ref = new Firebase(`${firebaseURL}lists/${list}`);
-					// this returns each artist key that has been added to a user's list
-					ref.orderByChild('name').on('child_added', function (snapshot) {
-						let currentArtist = snapshot.val().name;
-						// make a GET request to /artists for each artist on a user's list
-						getArtist(currentArtist)
-						.then(
-							data => {
-								data.key = currentArtist;
-								// store each artist in currentUserArtists arr and output to DOM
-								$scope.currentUserArtists.push(data);
-							},
-							error => console.log(error)
-							)
-					});
+					// get the list based on the key
+					return getList(list);
 				},
-				error => console.log(error)
+				err => console.log(err)
+			).then(
+				list => {
+					console.log(list);
+					for (let item in list) {
+						$scope.currentUserArtists.push(list[item]);
+					}
+				},
+				err => console.log(err)
 			)
 		}
 
@@ -54,7 +63,7 @@ app.controller("UserCtrl", [
 						// find the object in the list that contains the artist the user wants to update/delete
 						for (let key in data) {
 							// build URL for the matching artist object inside a user's list
-							if (data[key].name === artistToUpdate) {
+							if (data[key].artistID === artistToUpdate) {
 								let listItemURL = `${firebaseURL}lists/${list}/${key}/`;
 								return resolve(listItemURL);
 							}
@@ -70,6 +79,7 @@ app.controller("UserCtrl", [
 			$scope.buildListURL(artistToUpdate)
 			.then(
 				url => {
+					console.log(url);
 					let listItemRef = new Firebase(url);
 					listItemRef.update({listened: true});
 				},
@@ -97,10 +107,15 @@ app.controller("UserCtrl", [
 		}
 
 		// Show or hide list item detail on click
-		$scope.showDetail = function (index, event) {
-			let currArtist = event.target.className;
-		  conduit.setSearchParams(currArtist);
-			$scope.activeIndex = index;
+		$scope.showDetail = function (index, id) {
+			getArtist(id)
+			.then(
+				artistData => {
+					console.log(artistData);
+					$scope.activeIndex = index;
+				},
+				err => console.log(err)
+			)
 		}
 
 		$scope.hideDetail = function () {
