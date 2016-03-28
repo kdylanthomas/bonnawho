@@ -9,6 +9,16 @@
 	  </div>
 	  <div class="panel-body" ng-show="isShowing($index)">
 	  	<div>Playing: {{ currArtistDetail.day }}</div>
+	  	<p>Sounds like {{ relatedArtists }}</p>
+
+			<!-- ALBUMS DIV -->
+			<div>
+				<div ng-repeat="album in albums | unique: 'name' ">
+					<img src="{{ album.image }}" alt="{{ album.id }}" style="width:100px"/>
+					<a href="https://play.spotify.com/album/{{ album.id }}">{{ album.name }}</a>
+				</div>
+			</div>
+
 			<button class="{{ artist.artistID }}" ng-click="updateListened(artist.artistID)">Listened</button>
 			<button class="{{ artist.artistID }}" ng-click="deleteArtist(artist.artistID)">Delete This Artist</button>
 	  </div>

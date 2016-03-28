@@ -1,6 +1,6 @@
 'use strict';
 
-let app = angular.module("capstone", ['ngRoute', 'firebase'])
+let app = angular.module("capstone", ['ngRoute', 'firebase', 'angular.filter'])
 .constant('firebaseURL', "https://bonnaroo-mock-api.firebaseio.com/");
 
 let isAuth = (authenticate) => new Promise((resolve, reject) => {
