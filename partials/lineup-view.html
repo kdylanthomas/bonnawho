@@ -2,23 +2,30 @@
 
 <section>
 
+	<!-- SEARCH FIELD -->
 	<input type="text" ng-model="searchArtist" class="form-control" placeholder="Find a specific artist"/>
 
+	<!-- DROPDOWN TO APPLY FILTERS -->
 	<div class="dropdown">
 	  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 	    Sort by...
 	    <span class="caret"></span>
 	  </button>
 	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-	    <li><a href="#/lineup" ng-click="sortAtoZ()">Alphabetical</a></li>
-	    <li><a href="#/lineup" ng-click="sortByHeadliners()">Headliners First</a></li>
-	    <li><a>By Day</a></li>
+	    <li><a href="#/lineup" ng-click="changeFilter('artist')">Alphabetical</a></li>
+	    <li><a href="#/lineup" ng-click="changeFilter('billing')">Headliners First</a></li>
+	    <li role="separator" class="divider"></li>
+	    <li class="dropdown-header">By Day:</li>
+	    <li><a href="#/lineup" ng-click="changeFilter('billing', 'Thursday')">Thursday</a></li>
+	    <li><a href="#/lineup" ng-click="changeFilter('billing', 'Friday')">Friday</a></li>
+	    <li><a href="#/lineup" ng-click="changeFilter('billing', 'Saturday')">Saturday</a></li>
+	    <li><a href="#/lineup" ng-click="changeFilter('billing', 'Sunday')">Sunday</a></li>
 	  </ul>
 	</div>
 
-	<div class="panel panel-default" ng-repeat="artist in lineup | filter: {artist: searchArtist}">
+	<!-- ARTIST PANELS -->
+	<div class="panel panel-default" ng-repeat="artist in lineup | orderBy: chosenFilter | filter: searchArtist || { day: selectedDay }">
 
-		<!-- basic panel -->
   	<div class="panel-body">
    		<h5 style="display:inline-block">{{ artist.artist }}</h5>
    		<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal--{{artist.key}}" ng-click="checkAgainstUserList(artist.artist)">
@@ -26,7 +33,7 @@
 			</button>
   	</div>
 
-  	<!-- modal -->
+  	<!-- MODALS -->
 		<div class="modal fade" id="modal--{{artist.key}}" tabindex="-1" role="dialog">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -42,9 +49,9 @@
 		        <button ng-if="alreadyAdded===true" type="button" disabled="disabled" class="btn btn-default" id="{{ artist.key }}">Added!</button>
 		        <button ng-if="!alreadyAdded" type="button" class="btn btn-default" id="{{ artist.key }}" ng-click="buildArtistObject($event, $index)">Add To List</button>
 		      </div>
-		    </div><!-- /.modal-content -->
-		  </div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
+		    </div>
+		  </div>
+		</div>
 
 	</div>
 
