@@ -1,4 +1,5 @@
 <div ng-include="'partials/navbar.html'" ng-init="checkPath()"></div>
+
 <section ng-init="populateList()">
 
 	<div class="panel panel-default" ng-repeat="artist in currentUserArtists">
@@ -8,7 +9,7 @@
 	    <button class="{{ artist.artistID }}" ng-show="isShowing($index)" ng-click="hideDetail()">Less</button>
 	  </div>
 	  <div class="panel-body" ng-show="isShowing($index)">
-	  	<div>Playing: {{ currArtistDetail.day }}</div>
+	  	<div>Playing {{ dayPlaying }}</div>
 	  	<p>Sounds like {{ relatedArtists }}</p>
 
 			<!-- ALBUMS DIV -->
@@ -18,6 +19,15 @@
 					<a href="https://play.spotify.com/album/{{ album.id }}">{{ album.name }}</a>
 				</div>
 			</div>
+
+			<!-- TOP TRACKS -->
+			<div>
+			<span>Never heard {{ artist.artistName }} before? We recommend
+				<a href="https://play.spotify.com/artist/{{ artistID }}" ng-repeat="track in topTracks">"{{track.name}}"{{$last ? '' : ', '}}</a>
+			</div>
+
+			<!-- WIDGET TO PLAY TOP TRACK (not working with dynamic URL insertion, this would be bae) -->
+			<!-- <iframe src={{embedURL}} width="300" height="80" frameborder="0" allowtransparency="true"></iframe> -->
 
 			<button class="{{ artist.artistID }}" ng-click="updateListened(artist.artistID)">Listened</button>
 			<button class="{{ artist.artistID }}" ng-click="deleteArtist(artist.artistID)">Delete This Artist</button>
