@@ -166,18 +166,16 @@ app.controller("LineupCtrl", [
 			})
 		}
 
-		$scope.sortByHeadliners = () => {
-			$scope.lineup.sort(function (obj1, obj2) {
-				return obj1.billing - obj2.billing;
-			})
-		}
+		// SORTING
+		$scope.chosenFilter = 'billing'; // set default filter to headliners first
 
-		$scope.sortAtoZ = () => {
-			getLineup()
-			.then(
-				data => $scope.lineup = convertObjToArray(data),
-				err => console.log(err)
-			)
+		$scope.changeFilter = function (filter, day) {
+			if (day) {
+				$scope.selectedDay = day;
+			} else {
+				$scope.selectedDay = "";
+			}
+			return $scope.chosenFilter = filter;
 		}
 
 	}]
