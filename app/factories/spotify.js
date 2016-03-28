@@ -32,7 +32,17 @@ app.factory("spotify", function ($q, $http) {
 		})
 	}
 
-	let Spotify = {searchArtist, getRelatedArtists, getAlbums};
+	let getTopTracks = (id) => {
+		return $q((resolve, reject) => {
+			$http.get(`https://api.spotify.com/v1/artists/${id}/top-tracks?country=US`)
+			.success(
+				tracks => resolve(tracks),
+				err => console.log(err)
+			)
+		})
+	}
+
+	let Spotify = {searchArtist, getRelatedArtists, getAlbums, getTopTracks};
 	return Spotify;
 
 })
