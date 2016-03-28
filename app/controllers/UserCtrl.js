@@ -9,8 +9,9 @@ app.controller("UserCtrl", [
 	"$q",
 	"$http",
 	"get-list",
+	"spotify",
 
-	function ($scope, authenticate, getUser, firebaseURL, getArtist, $q, $http, getList) {
+	function ($scope, authenticate, getUser, firebaseURL, getArtist, $q, $http, getList, spotify) {
 
 		let user = authenticate.getCurrentUser(); // holds firebase authData object
 		let artistToUpdate; // holds unique firebase-generated key for an artist object inside a user's list object
@@ -20,6 +21,10 @@ app.controller("UserCtrl", [
 
 		$scope.currArtistDetail = {
 			day: "",
+			image: "",
+			albums: "",
+			genres: "",
+			relatedArtists: ""
 		}
 
 		let getSpotifyData = (artist) => {
@@ -111,12 +116,59 @@ app.controller("UserCtrl", [
 
 		// Show or hide list item detail on click
 		$scope.showDetail = function (index, id) {
+			$scope.hideDetail(); // closes last card before loading any data for new one
 			getArtist(id)
 			.then(
-				artistData => {
-					console.log(artistData);
-					$scope.currArtistDetail.day = artistData.day;
-					$scope.activeIndex = index;
+				artistData => { // if I add images to database, grab them here
+					$scope.currArtistDetail.day = artistData.day; // adds day artist is playing to page
+					return spotify.searchArtist(artistData.artist);
+				},
+				err => console.log(err)
+			).then(
+				spotifyData => { // used to retrieve artist's ID for subsequent spotify requests
+					console.log('artist', spotifyData.artists.items[0]);
+					let id = spotifyData.artists.items[0].id; // grabs ID of artist for future spotify requests
+					showRelatedArtists(id);
+					showAlbums(id);
+					$scope.activeIndex = index; //shouldn't happen here
+				},
+				err => console.log(err)
+			)
+		}
+
+		let showRelatedArtists = (id) => {
+			$scope.relatedArtists = []; // initialize as empty each time a request is made
+			spotify.getRelatedArtists(id)
+			.then(
+				relatedArtists => {
+					for (let i = 0; i < 4; i++) {
+						$scope.relatedArtists.push(relatedArtists.artists[i].name);
+					}
+					$scope.relatedArtists = $scope.relatedArtists.join(', ');
+					console.log('related artists', $scope.relatedArtists);
+				},
+				err => console.log(err)
+			)
+		}
+
+
+		let showAlbums = (id) => {
+			$scope.albums = []; // initialize as empty each time a request is made
+			spotify.getAlbums(id)
+			.then(
+				albums => {
+					let artistAlbums = albums.items;
+					artistAlbums.forEach((album, i) => {
+						let currentAlbum = {
+							image: "",
+							name: "",
+							id: ""
+						}
+						currentAlbum.name = album.name;
+						currentAlbum.image = album.images[0].url;
+						currentAlbum.id = album.id;
+						$scope.albums.push(currentAlbum);
+					})
 				},
 				err => console.log(err)
 			)
