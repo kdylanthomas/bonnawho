@@ -15,10 +15,11 @@ app.controller("UserCtrl", [
 	function ($scope, authenticate, getUser, firebaseURL, getArtist, $q, $http, getList, spotify, $firebaseObject) {
 
 		let user = authenticate.getCurrentUser(); // holds firebase authData object
-		let artistToUpdate; // holds unique firebase-generated key for an artist object inside a user's list object
 		let list; // holds unique firebase-generated key that corresponds to a user's list
-		
-		$scope.maxRating = 5;
+
+		// ***********************
+		// INITIAL POPULATE PAGE
+		// ***********************
 
 		$scope.populateList = () => { // gets a user's list of saved artists
 			$scope.activeIndex = null; // hide details for each artist on list
@@ -33,112 +34,46 @@ app.controller("UserCtrl", [
 				},
 				err => console.log(err)
 			).then(
-				list => {
-					for (let item in list) {
-						console.log(list[item].rating);
-						let stars = list[item].stars;
-						list[item].stars = [];
-						for (var i = 0; i < $scope.maxRating; i++) {
-            	var clazz = (parseInt(list[item].rating) <= i) ? "star" : "star filled";
-           	 	list[item].stars.push({class: clazz});
-          	}
-						$scope.currentUserArtists.push(list[item]); // push each item on list to scoped array
+				listData => {
+					for (let item in listData) { // artist on user listData
+           	listData[item].url = `${firebaseURL}lists/${list}/${item}`; // save firebase ref
+						$scope.currentUserArtists.push(listData[item]); // push each item on list to scoped array
 					}
 				},
 				err => console.log(err)
 			)
 		}
 
+		// ***********************
+		// MANAGING VISIBILITY
+		// ***********************
 
-
-		$scope.buildListURL = function (artistToUpdate) { // creates ref to artist object inside a user's list
-			return $q((resolve, reject) => {
-				getList(list)
-				.then(
-					listData => {
-						for (let key in listData) { // find artist obj in user list that matches the artist info the user is updating
-							console.log(key);
-							if (listData[key].artistID === artistToUpdate) {
-								let listItemURL = `${firebaseURL}lists/${list}/${key}/`; // create ref to artist obj in user list
-								return resolve(listItemURL); // function returns ref
-							}
-						};
-					},
-					error => reject(error)
-				)
-			})
+		$scope.hideDetail = function () {
+			$scope.activeIndex = null;
 		}
 
-		$scope.updateListened = function (id) { // update -- currently not in use
-			$scope.buildListURL(id)
-			.then(
-				url => {
-					console.log(url);
-					let listItemRef = new Firebase(url);
-					listItemRef.update({listened: true});
-				},
-				error => console.log(error)
-			)
+		$scope.isShowing = function (index) {
+			return $scope.activeIndex === index;
 		}
 
-		$scope.changeRating = function (artist, index) {
-			let newRating = index + 1;
-			$scope.buildListURL(artist)
-			.then(
-				url => {
-					console.log(url);
-					$scope.data = $firebaseObject(new Firebase(url));
-					console.log($scope.data);
-					let oldRating = $scope.data.rating;
-
-					let listItemRef = new Firebase(url);
-					listItemRef.update({rating: newRating});
-					listItemRef.update({listened: true});
-					if (newRating !== oldRating) {
-						console.log('changed rating');
-					}
-					for (let i = 0; i < $scope.currentUserArtists.length; i++) { // what a disaster
-						if ($scope.currentUserArtists[i].artistID === artist) {
-							$scope.currentUserArtists[i].rating = newRating;
-							$scope.currentUserArtists[i].stars = []; // reset stars at 0
-							for (var j = 0; j < $scope.maxRating; j++) {
-            		var clazz = (parseInt($scope.currentUserArtists[i].rating) <= j) ? "star" : "star filled"; // check rating again
-           	 		$scope.currentUserArtists[i].stars.push({class: clazz});
-          		}
-						}
-					}
-				},
-				error => console.log(error)
-			)
-		}
-
-
-		$scope.deleteArtist = function (id) { // delete
-			console.log(id);
-			$scope.buildListURL(id)
-			.then(
-				url => {
-					console.log(url);
-					$http.delete(`${url}.json`)
-						.success(
-							() => {
-								console.log(`you deleted ${id}`);
-								$scope.populateList(); // repopulate updated list
-							},
-							error => console.log(error)
-						)
-				},
-				error => console.log(error)
-			)
-		}
+		// ***********************
+		// BUILD ARTIST DETAIL VIEW
+		// ***********************
 
 		// Show or hide list item detail on click
-		$scope.showDetail = function (index, id) {
+		$scope.showDetail = function (index, artist) {
 			$scope.hideDetail(); // closes last card before loading any data for new one
-			getArtist(id) // firebase GET request
+			$scope.data = $firebaseObject(new Firebase(artist.url)); // set $scope.data to firebase obj for currently open artist
+			getArtist(artist.artistID) // get everything i want from firebase artist object
 			.then(
 				artistData => { // if I add images to database, grab them here (all Firebase info should come here)
 					$scope.dayPlaying = artistData.day; // adds day artist is playing to page
+					$scope.fillStars($scope.data.rating); // hiding this here in lieu of another promise
+					if ($scope.data.comments === '') {
+						  $scope.editorEnabled = true;
+					} else {
+						 $scope.editorEnabled = false;
+					}
 					return spotify.searchArtist(artistData.artist); // retrieves Spotify artist ID for future requests
 				},
 				err => console.log(err)
@@ -155,6 +90,74 @@ app.controller("UserCtrl", [
 				err => console.log(err)
 			)
 		}
+
+		// ***********************
+		// DELETING ARTISTS
+		// ***********************
+
+		$scope.deleteArtist = function (artist) { // delete
+			$http.delete(`${artist.url}.json`)
+			.success(
+				() => {
+					console.log(`you deleted ${artist.artistID}`);
+					$scope.populateList(); // repopulate updated list
+				},
+				error => console.log(error)
+			)
+		}
+
+		// ***********************
+		// UPDATING ARTISTS
+		// ***********************
+
+		$scope.changeRating = function (artist, index) {
+			let newRating = index + 1;
+			let oldRating = $scope.data.rating;
+
+			let listItemRef = new Firebase(artist.url);
+			let firebaseObj = $firebaseObject(listItemRef);
+
+			firebaseObj.$bindTo($scope, "data").then(() => {
+				console.log($scope.data);
+				$scope.data.rating = newRating;
+				listItemRef.update({ rating: newRating });
+				listItemRef.update({listened: true});
+			})
+
+			$scope.fillStars(newRating); // reflect new rating with stars
+		}
+
+		$scope.addComment = function (artist, index) {
+			let listItemRef = new Firebase(artist.url);
+			let firebaseObj = $firebaseObject(listItemRef);
+
+			firebaseObj.$bindTo($scope, "data").then(() => {
+				console.log($scope.data);
+				$scope.data.comments = $scope.currentUserArtists[index].comments;
+				listItemRef.update({comments: $scope.currentUserArtists[index].comments})
+			});
+		}
+
+	  $scope.enableEditor = function() {
+	    $scope.editorEnabled = true;
+	  };
+
+	  $scope.disableEditor = function() {
+	    $scope.editorEnabled = false;
+	  };
+
+		$scope.fillStars = function (rating) {
+			console.log('rating', rating);
+			$scope.stars = [];
+			for (let i = 0; i < 5; i++) {
+				var clazz = (parseInt(rating) <= i) ? "star" : "star filled";
+				$scope.stars.push({class: clazz});
+			}
+		}
+
+		// ***********************
+		// RETRIEVING SPOTIFY DATA
+		// ***********************
 
 		let showRelatedArtists = (id) => {
 			$scope.relatedArtists = []; // initialize as empty each time a request is made
@@ -216,18 +219,6 @@ app.controller("UserCtrl", [
 				err => console.log(err)
 			)
 		}
-
-		$scope.hideDetail = function () {
-			$scope.activeIndex = null;
-		}
-
-		$scope.isShowing = function (index) {
-			return $scope.activeIndex === index;
-		}
-
-		// RATING NONSENSE
-
-
 
 	}]
 )

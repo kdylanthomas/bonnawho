@@ -2,10 +2,12 @@
 
 <section ng-init="populateList()">
 
+	<!-- include a nav bar here for all artists, unlistened artists, listened artists -->
+
 	<div class="panel panel-default" ng-repeat="artist in currentUserArtists">
 	  <div class="panel-heading">
 	    <h3 class="panel-title" style="display:inline-block">{{ artist.artistName }}</h3>
-	    <button class="{{ artist.artistID }}" ng-show="!isShowing($index)" ng-click="showDetail($index, artist.artistID)">More</button>
+	    <button class="{{ artist.artistID }}" ng-show="!isShowing($index)" ng-click="showDetail($index, artist)">More</button>
 	    <button class="{{ artist.artistID }}" ng-show="isShowing($index)" ng-click="hideDetail()">Less</button>
 	  </div>
 	  <div class="panel-body" ng-show="isShowing($index)">
@@ -29,16 +31,30 @@
 			<!-- WIDGET TO PLAY TOP TRACK (not working with dynamic URL insertion, this would be bae) -->
 			<!-- <iframe src={{embedURL}} width="300" height="80" frameborder="0" allowtransparency="true"></iframe> -->
 
+			<!-- STAR RATING -->
 			<ul class="star-rating">
-  			<li ng-repeat="star in artist.stars" class="star {{star.class}}" ng-click="changeRating(artist.artistID, $index)">
+  			<li ng-repeat="star in stars" class="star {{star.class}}" ng-click="changeRating(artist, $index)">
     			<i class="fa fa-star"></i>
   			</li>
 			</ul>
 
-			<!-- show if rating > 0; add ng-click on enter keyup that updates artist.comments -->
-			<textarea class="form-control" rows="3" placeholder="What did you think?"></textarea>
+			<!-- COMMENTS -->
+			<div ng-if="data.rating > 0">
+				<p ng-if="artist.comments !== ''">Your comments:</p>
+				<div ng-if="artist.comments !== '' && !editorEnabled">
+	      	<span>{{ data.comments }}</span>
+	      	<a href="" ng-click="enableEditor()">Edit</a>
+	    	</div>
+	    	<div ng-show="editorEnabled">
+	     		<textarea ng-model="artist.comments" ng-show="editorEnabled" placeholder="What did you think?"></textarea>
+	     	 	<a href="" ng-click="addComment(artist, $index); disableEditor()">Save</a>
+	      	or
+	      	<a href="" ng-click="disableEditor()">cancel</a>
+	    	</div>
+			</div>
 
-			<button class="{{ artist.artistID }}" ng-click="deleteArtist(artist.artistID)">Delete This Artist</button>
+			<!-- DELETE ARTIST -->
+			<button class="{{ artist.artistID }}" ng-click="deleteArtist(artist)">Delete This Artist</button>
 
 	</div>
 
