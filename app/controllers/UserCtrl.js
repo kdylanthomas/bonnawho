@@ -56,6 +56,18 @@ app.controller("UserCtrl", [
 			return $scope.activeIndex === index;
 		}
 
+		$scope.listFilter = '';
+
+		$scope.switchView = function (filter) {
+			$scope.hideDetail();
+			$scope.populateList();
+			if (!filter) {
+				$scope.listFilter = '';
+			} else {
+				return $scope.listFilter = filter;
+			}
+		}
+
 		// ***********************
 		// BUILD ARTIST DETAIL VIEW
 		// ***********************
@@ -128,13 +140,15 @@ app.controller("UserCtrl", [
 		}
 
 		$scope.addComment = function (artist, index) {
+			// console.log(index);
 			let listItemRef = new Firebase(artist.url);
 			let firebaseObj = $firebaseObject(listItemRef);
 
 			firebaseObj.$bindTo($scope, "data").then(() => {
 				console.log($scope.data);
-				$scope.data.comments = $scope.currentUserArtists[index].comments;
-				listItemRef.update({comments: $scope.currentUserArtists[index].comments})
+				$scope.data.comments = artist.comments;
+				// $scope.data.comments = $scope.currentUserArtists[index].comments;
+				listItemRef.update({comments: $scope.data.comments});
 			});
 		}
 

@@ -22,6 +22,7 @@ app.controller("LineupCtrl", [
 			artistName: "",
 			listened: false,
 			rating: 0,
+			day: "",
 			comments: ""
 		}
 
@@ -66,6 +67,7 @@ app.controller("LineupCtrl", [
 
 		.then(
 			lineupData => {
+				console.log(lineupData);
 				$scope.lineup = convertObjToArray(lineupData);
 				$scope.getArtistsOnList();
 			},
@@ -79,7 +81,10 @@ app.controller("LineupCtrl", [
 			artistToAdd.artistID = chosenArtist;
 			getArtist(chosenArtist)
 			.then(
-				data => artistToAdd.artistName = data.artist,
+				data => {
+					artistToAdd.artistName = data.artist;
+					artistToAdd.day = data.day;
+				},
 				err => console.log(err)
 			);
 			// after artist object is constructed, find current user's list

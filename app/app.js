@@ -21,6 +21,11 @@ app.config(['$routeProvider',
         controller: 'LineupCtrl',
         resolve: { isAuth }
       }).
+      when('/welcome', {
+        templateUrl: 'partials/landing.html',
+        controller: 'LandingCtrl',
+        resolve: { isAuth }
+      }).
       when('/user', {
         templateUrl: 'partials/user-view.html',
         controller: 'UserCtrl',

@@ -1,0 +1,13 @@
+<section>
+	<!-- feature three or more artists -->
+	<h4>Artists of the Moment</h4>
+	<div ng-repeat="artist in randomArtists | unique: 'artist.artist' " >
+		<h5>{{ artist.artist }}</h5>
+	</div>
+	<!-- link to spotify playlist -->
+	<h4>Sample the Lineup</h4>
+	<!-- EMBED OPTION -->
+	<iframe src="https://embed.spotify.com/?uri=spotify:user:127594937:playlist:2CURfLLwCnbjrHqYq3sTbe" width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
+
+	<!-- LINK OPTION -->
+</section>

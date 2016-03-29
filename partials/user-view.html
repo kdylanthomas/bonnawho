@@ -2,9 +2,17 @@
 
 <section ng-init="populateList()">
 
-	<!-- include a nav bar here for all artists, unlistened artists, listened artists -->
+	<!-- FILTER USER LIST  -->
+	<div class="filter-list">
+			<a href="" ng-click="switchView()">Show All</a> |
+			<a href="" ng-click="switchView({listened: false})">Your Queue</a> |
+			<a href="" ng-click="switchView({listened: true})">Your Listened Artists</a> |
+			<a href="" ng-click="showSchedule()">Your Schedule</a>
+	</div>
 
-	<div class="panel panel-default" ng-repeat="artist in currentUserArtists">
+
+	<!-- USER'S SAVED ARTISTS -->
+	<div class="panel panel-default" ng-repeat="artist in currentUserArtists | filter: listFilter ">
 	  <div class="panel-heading">
 	    <h3 class="panel-title" style="display:inline-block">{{ artist.artistName }}</h3>
 	    <button class="{{ artist.artistID }}" ng-show="!isShowing($index)" ng-click="showDetail($index, artist)">More</button>
@@ -23,9 +31,10 @@
 			</div>
 
 			<!-- TOP TRACKS -->
-			<div>
-			<span>Never heard {{ artist.artistName }} before? We recommend
+			<div ng-if="artist.listened === false">
+				<span>Hmm, it looks like you haven't listened to {{ artist.artistName }} yet. Try one of these tracks to get started: 
 				<a href="https://play.spotify.com/artist/{{ artistID }}" ng-repeat="track in topTracks">"{{track.name}}"{{$last ? '' : ', '}}</a>
+				</span>
 			</div>
 
 			<!-- WIDGET TO PLAY TOP TRACK (not working with dynamic URL insertion, this would be bae) -->
@@ -56,6 +65,5 @@
 			<!-- DELETE ARTIST -->
 			<button class="{{ artist.artistID }}" ng-click="deleteArtist(artist)">Delete This Artist</button>
 
+		</div>
 	</div>
-
-</section>
