@@ -29,9 +29,17 @@
 			<!-- WIDGET TO PLAY TOP TRACK (not working with dynamic URL insertion, this would be bae) -->
 			<!-- <iframe src={{embedURL}} width="300" height="80" frameborder="0" allowtransparency="true"></iframe> -->
 
-			<button class="{{ artist.artistID }}" ng-click="updateListened(artist.artistID)">Listened</button>
+			<ul class="star-rating">
+  			<li ng-repeat="star in artist.stars" class="star {{star.class}}" ng-click="changeRating(artist.artistID, $index)">
+    			<i class="fa fa-star"></i>
+  			</li>
+			</ul>
+
+			<!-- show if rating > 0; add ng-click on enter keyup that updates artist.comments -->
+			<textarea class="form-control" rows="3" placeholder="What did you think?"></textarea>
+
 			<button class="{{ artist.artistID }}" ng-click="deleteArtist(artist.artistID)">Delete This Artist</button>
-	  </div>
+
 	</div>
 
 </section>

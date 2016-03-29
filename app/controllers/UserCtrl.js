@@ -10,12 +10,15 @@ app.controller("UserCtrl", [
 	"$http",
 	"get-list",
 	"spotify",
+	"$firebaseObject",
 
-	function ($scope, authenticate, getUser, firebaseURL, getArtist, $q, $http, getList, spotify) {
+	function ($scope, authenticate, getUser, firebaseURL, getArtist, $q, $http, getList, spotify, $firebaseObject) {
 
 		let user = authenticate.getCurrentUser(); // holds firebase authData object
 		let artistToUpdate; // holds unique firebase-generated key for an artist object inside a user's list object
 		let list; // holds unique firebase-generated key that corresponds to a user's list
+		
+		$scope.maxRating = 5;
 
 		$scope.populateList = () => { // gets a user's list of saved artists
 			$scope.activeIndex = null; // hide details for each artist on list
@@ -32,6 +35,13 @@ app.controller("UserCtrl", [
 			).then(
 				list => {
 					for (let item in list) {
+						console.log(list[item].rating);
+						let stars = list[item].stars;
+						list[item].stars = [];
+						for (var i = 0; i < $scope.maxRating; i++) {
+            	var clazz = (parseInt(list[item].rating) <= i) ? "star" : "star filled";
+           	 	list[item].stars.push({class: clazz});
+          	}
 						$scope.currentUserArtists.push(list[item]); // push each item on list to scoped array
 					}
 				},
@@ -39,13 +49,16 @@ app.controller("UserCtrl", [
 			)
 		}
 
+
+
 		$scope.buildListURL = function (artistToUpdate) { // creates ref to artist object inside a user's list
 			return $q((resolve, reject) => {
 				getList(list)
 				.then(
-					list => {
-						for (let key in list) { // find artist obj in user list that matches the artist info the user is updating
-							if (list[key].artistID === artistToUpdate) {
+					listData => {
+						for (let key in listData) { // find artist obj in user list that matches the artist info the user is updating
+							console.log(key);
+							if (listData[key].artistID === artistToUpdate) {
 								let listItemURL = `${firebaseURL}lists/${list}/${key}/`; // create ref to artist obj in user list
 								return resolve(listItemURL); // function returns ref
 							}
@@ -56,7 +69,7 @@ app.controller("UserCtrl", [
 			})
 		}
 
-		$scope.updateListened = function (id) { // update
+		$scope.updateListened = function (id) { // update -- currently not in use
 			$scope.buildListURL(id)
 			.then(
 				url => {
@@ -68,7 +81,40 @@ app.controller("UserCtrl", [
 			)
 		}
 
+		$scope.changeRating = function (artist, index) {
+			let newRating = index + 1;
+			$scope.buildListURL(artist)
+			.then(
+				url => {
+					console.log(url);
+					$scope.data = $firebaseObject(new Firebase(url));
+					console.log($scope.data);
+					let oldRating = $scope.data.rating;
+
+					let listItemRef = new Firebase(url);
+					listItemRef.update({rating: newRating});
+					listItemRef.update({listened: true});
+					if (newRating !== oldRating) {
+						console.log('changed rating');
+					}
+					for (let i = 0; i < $scope.currentUserArtists.length; i++) { // what a disaster
+						if ($scope.currentUserArtists[i].artistID === artist) {
+							$scope.currentUserArtists[i].rating = newRating;
+							$scope.currentUserArtists[i].stars = []; // reset stars at 0
+							for (var j = 0; j < $scope.maxRating; j++) {
+            		var clazz = (parseInt($scope.currentUserArtists[i].rating) <= j) ? "star" : "star filled"; // check rating again
+           	 		$scope.currentUserArtists[i].stars.push({class: clazz});
+          		}
+						}
+					}
+				},
+				error => console.log(error)
+			)
+		}
+
+
 		$scope.deleteArtist = function (id) { // delete
+			console.log(id);
 			$scope.buildListURL(id)
 			.then(
 				url => {
@@ -76,7 +122,7 @@ app.controller("UserCtrl", [
 					$http.delete(`${url}.json`)
 						.success(
 							() => {
-								console.log(`you deleted ${artistToUpdate}`);
+								console.log(`you deleted ${id}`);
 								$scope.populateList(); // repopulate updated list
 							},
 							error => console.log(error)
@@ -178,6 +224,10 @@ app.controller("UserCtrl", [
 		$scope.isShowing = function (index) {
 			return $scope.activeIndex === index;
 		}
+
+		// RATING NONSENSE
+
+
 
 	}]
 )
