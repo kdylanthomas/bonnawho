@@ -1,0 +1,34 @@
+<section>
+	<div>
+		<h4>Thursday</h4>
+			<div ng-repeat="artist in currentUserArtists | filter: {day: 'Thursday'}">
+				<div class="panel-body">
+	 				<h5 style="display:inline-block">{{ artist.artistName }}</h5>
+				</div>
+			</div>
+	</div>
+	<div>
+		<h4>Friday</h4>
+			<div ng-repeat="artist in currentUserArtists | filter: {day: 'Friday'} ">
+				<div class="panel-body">
+	 				<h5 style="display:inline-block">{{ artist.artistName }}</h5>
+				</div>
+			</div>
+	</div>
+	<div>
+		<h4>Saturday</h4>
+			<div ng-repeat="artist in currentUserArtists | filter: {day: 'Saturday'} ">
+				<div class="panel-body">
+	 				<h5 style="display:inline-block">{{ artist.artistName }}</h5>
+				</div>
+			</div>
+	</div>
+	<div>
+		<h4>Sunday</h4>
+			<div ng-repeat="artist in currentUserArtists | filter: {day: 'Sunday'} ">
+				<div class="panel-body">
+	 				<h5 style="display:inline-block">{{ artist.artistName }}</h5>
+				</div>
+			</div>
+	</div>
+</section>
