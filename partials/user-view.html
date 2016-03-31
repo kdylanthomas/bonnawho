@@ -13,14 +13,17 @@
 
 	<!-- USER'S SAVED ARTISTS -->
 	<div ng-show="showSchedule===false">
-
-		<p ng-show="!filteredArtists.length" ng-cloak>You don't have any artists saved to this list :(</p>
+		<div class="no-matches"  ng-show="!filteredArtists.length" ng-cloak>
+			<p ng-cloak>Bummer! You don't have any artists saved to this list.</p>
+			<button class="btn lineup-button" onclick="location.href='#/lineup'">Find More Artists</button>
+			<!-- <a href="#/lineup">Back to the lineup</a> -->
+		</div>
 
 		<div class="row">
-			<div class="col-md-6 col-md-offset-3 panel panel-default panel-custom" ng-repeat="artist in filteredArtists = (currentUserArtists | filter: listFilter )">
+			<div class="col-md-6 col-md-offset-3 panel panel-default panel-custom" ng-repeat="artist in filteredArtists = (currentUserArtists | filter: listFilter)">
 
 			  <div class="panel-heading panel-heading-custom">
-			    <h3 class="panel-title" style="display:inline-block">{{ artist.artistName }}</h3>
+			    <h3 class="panel-title heading-name">{{ artist.artistName }}</h3>
 			    <a href="" class="{{ artist.artistID }}" ng-show="!isShowing($index)" ng-click="showDetail($index, artist)">
 	  				<span class="glyphicon glyphicon-menu-hamburger hamburger" aria-hidden="true"></span>
 	  			</a>
@@ -41,11 +44,11 @@
 			  	</div>
 
 					<!-- ALBUMS DIV -->
-					<h5>{{ artist.artistName }}'s albums:</h5>
-					<div class="album-parent" style="white-space: nowrap; overflow-x:scroll">
-						<div ng-repeat="album in albums | unique: 'name' " style="display: inline-block; vertical-align: top">
-							<img src="{{ album.image }}" alt="{{ album.id }}" style="width:125px; margin-top:0; padding: 0 1%"/>
-							<p style="width:120px; white-space: pre-line"><a href="https://play.spotify.com/album/{{ album.id }}">{{ album.name }}</a></p>
+					<h5>Albums by {{ artist.artistName }}:</h5>
+					<div class="album-parent">
+						<div class="album" ng-repeat="album in albums | unique: 'name' ">
+							<img src="{{ album.image }}" alt="{{ album.id }}" />
+							<p><a href="https://play.spotify.com/album/{{ album.id }}">{{ album.name }}</a></p>
 						</div>
 					</div>
 

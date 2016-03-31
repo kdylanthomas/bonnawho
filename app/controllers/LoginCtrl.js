@@ -23,7 +23,7 @@ app.controller("LoginCtrl", [
 				() => authenticate.loginUser(user.email, user.password),
 				error => console.log('could not add user to database')
 			).then(
-				() => $location.path('/lineup'),
+				() => $location.path('/welcome'),
 				error => console.log('could not authenticate user')
 			)
 		}
@@ -31,7 +31,7 @@ app.controller("LoginCtrl", [
 		$scope.login = function (user) {
 			authenticate.loginUser(user.email, user.password)
 			.then(
-				() => $location.path('/lineup'),
+				() => $location.path('/welcome'),
 				error => console.log('could not authenticate user')
 			);
 		}

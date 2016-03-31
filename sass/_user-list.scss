@@ -16,6 +16,26 @@ $dark-green: rgb(26,114,99);
 	}
 }
 
+.no-matches {
+	text-align: center;
+	font-size: 1.5em;
+	color: rgb(140,232,171);
+	a {
+		font-size: 1em;
+		color: rgb(140,232,171);
+	}
+	a:hover {
+		color: #fff;
+	}
+	.lineup-button {
+		border-radius: 0;
+		padding: 1%;
+		margin-top: 2%;
+		background-color: rgb(26,114,99);
+		color: #fff;
+	}
+}
+
 .panel-custom {
 	padding: 0;
 	border: 1px solid $dark-purple-bg;
@@ -24,6 +44,10 @@ $dark-green: rgb(26,114,99);
 	.panel-heading-custom {
 	  background-color: rgb(83,0,121);
   	color: rgb(140,232,171);
+  	.heading-name {
+  		display: inline-block;
+  		font-size: 1.25em;
+  	}
 		.hamburger {
 			color: #fff;
 			float: right;
@@ -44,12 +68,27 @@ $dark-green: rgb(26,114,99);
 			color: #4C4C4C;
 		}
 
+		.album-parent {
+			white-space: nowrap;
+			overflow-x: scroll;
+			.album {
+				display: inline-block;
+				vertical-align: top;
+				img {
+					width: 125px;
+					margin-top: 0;
+					padding: 0 1%;
+				}
+				p {
+					width: 120px;
+					white-space: pre-line;
+				}
+			}
+		}
+
 		.user-inputs {
-			// border: 1px solid $dark-purple-bg;
 			padding-left: 2%;
 			border-radius: 10px;
-			// width: 90%;
-
 		}
 
 		blockquote {
