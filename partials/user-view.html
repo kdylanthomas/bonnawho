@@ -4,10 +4,10 @@
 
 	<!-- FILTER USER LIST  -->
 	<div class="filter-list">
-			<a href="" ng-click="switchView()">Show All</a> |
-			<a href="" ng-click="switchView({listened: false})">Your Queue</a> |
-			<a href="" ng-click="switchView({listened: true})">Your Listened Artists</a> |
-			<a href="" ng-click="populateFavorites(currentUserArtists)">Your Schedule</a>
+		<a href="" ng-click="switchView()">Show All</a> |
+		<a href="" ng-click="switchView({listened: false})">Your Queue</a> |
+		<a href="" ng-click="switchView({listened: true})">Your Listened Artists</a> |
+		<a href="" ng-click="populateFavorites(currentUserArtists)">Your Schedule</a>
 	</div>
 
 
@@ -73,23 +73,23 @@
 						<!-- COMMENTS -->
 
 						<div ng-if="data.rating > 0">
-							<p ng-if="artist.comments !== ''">Your comments:</p>
+							<p ng-if="artist.comments !== ''">Your comments:
+								<a href="" ng-if="!editorEnabled" ng-click="enableEditor()">[edit]</a>
+							</p>
 							<div ng-if="artist.comments !== '' && !editorEnabled">
-				      	<span>{{ data.comments }}</span>
-				      	<a href="" ng-click="enableEditor()">Edit</a>
+				      	<blockquote>{{ data.comments }}</blockquote>
 				    	</div>
-				    	<div ng-show="editorEnabled">
+				    	<div ng-show="artist.comments === '' || editorEnabled">
 				     		<textarea ng-model="artist.comments" ng-show="editorEnabled" placeholder="What did you think?"></textarea>
-				     	 	<a href="" ng-click="addComment(artist, $index); disableEditor()">Save</a>
-				      	or
-				      	<a href="" ng-click="disableEditor()">cancel</a>
+				     		<div>
+				     	 		<a href="" ng-click="addComment(artist, $index); disableEditor()">save</a>
+				      		or
+				      		<a href="" ng-click="disableEditor()">cancel</a>
+				      	</div>
 				    	</div>
 						</div>
 
 					</div>
-
-					<!-- DELETE ARTIST -->
-					
 
 				</div>
 

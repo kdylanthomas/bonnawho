@@ -1,35 +1,33 @@
 <section>
 
-	<div>
-		<h4>Thursday</h4>
-			<ul>
-				<li ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Thursday'})">{{artist.artistName}}</li>
-			</ul>
-			<p ng-show="!filteredArtists.length">no thursday selects</p>
-	</div>
+	<div class="schedule-container">
+		<div class="row schedule-day">
+			<div class="col-md-4 col-md-offset-2">
+				<h3 class="day-header">Thursday</h3>
+					<p class="artist-by-day" ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Thursday'})">{{artist.artistName}}</p>
+					<p class="artist-by-day" ng-show="!filteredArtists.length">You haven't liked any Thursday artists yet :(</p>
+			</div>
 
-	<div>
-		<h4>Friday</h4>
-			<ul>
-				<li ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Friday'})">{{artist.artistName}}</li>
-			</ul>
-			<p ng-show="!filteredArtists.length">no friday selects</p>
-	</div>
+			<div class="col-md-4 schedule-day">
+				<h3 class="day-header">Friday</h3>
+					<p class="artist-by-day" ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Friday'})">{{artist.artistName}}</p>
+					<p class="artist-by-day" ng-show="!filteredArtists.length">You haven't liked any Friday artists yet :(</p>
+			</div>
+		</div>
 
-	<div>
-		<h4>Saturday</h4>
-			<ul>
-				<li ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Saturday'})">{{artist.artistName}}</li>
-			</ul>
-			<p ng-show="!filteredArtists.length">no saturday selects</p>
-	</div>
+		<div class="row">
+			<div class="col-md-4 col-md-offset-2 schedule-day">
+				<h3 class="day-header">Saturday</h3>
+				<p class="artist-by-day" ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Saturday'})">{{artist.artistName}}</p>
+				<p class="artist-by-day" ng-show="!filteredArtists.length">You haven't liked any Saturday artists yet :(</p>
+			</div>
 
-	<div>
-		<h4>Sunday</h4>
-		<ul>
-			<li ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Sunday'})">{{artist.artistName}}</li>
-		</ul>
-		<p ng-show="!filteredArtists.length">no sunday selects</p>
+			<div class="col-md-4 schedule-day">
+				<h3 class="day-header">Sunday</h3>
+				<p class="artist-by-day" ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Sunday'})">{{artist.artistName}}</p>
+				<p class="artist-by-day" ng-show="!filteredArtists.length">You haven't liked any Sunday artists yet :(</p>
+			</div>
+		</div
 	</div>
 
 </section>
