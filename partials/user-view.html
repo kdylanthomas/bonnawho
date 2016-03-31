@@ -7,63 +7,78 @@
 			<a href="" ng-click="switchView()">Show All</a> |
 			<a href="" ng-click="switchView({listened: false})">Your Queue</a> |
 			<a href="" ng-click="switchView({listened: true})">Your Listened Artists</a> |
-			<a href="" ng-click="showSchedule()">Your Schedule</a>
+			<a href="" ng-click="populateFavorites(currentUserArtists)">Your Schedule</a>
 	</div>
 
 
 	<!-- USER'S SAVED ARTISTS -->
-	<div class="panel panel-default" ng-repeat="artist in currentUserArtists | filter: listFilter ">
-	  <div class="panel-heading">
-	    <h3 class="panel-title" style="display:inline-block">{{ artist.artistName }}</h3>
-	    <button class="{{ artist.artistID }}" ng-show="!isShowing($index)" ng-click="showDetail($index, artist)">More</button>
-	    <button class="{{ artist.artistID }}" ng-show="isShowing($index)" ng-click="hideDetail()">Less</button>
-	  </div>
-	  <div class="panel-body" ng-show="isShowing($index)">
-	  	<div>Playing {{ dayPlaying }}</div>
-	  	<p>Sounds like {{ relatedArtists }}</p>
+	<div ng-show="showSchedule===false">
 
-			<!-- ALBUMS DIV -->
-			<div>
-				<div ng-repeat="album in albums | unique: 'name' ">
-					<img src="{{ album.image }}" alt="{{ album.id }}" style="width:100px"/>
-					<a href="https://play.spotify.com/album/{{ album.id }}">{{ album.name }}</a>
+		<p ng-show="!filteredArtists.length" ng-cloak>You don't have any artists saved to this list :(</p>
+
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3 panel panel-default" ng-repeat="artist in filteredArtists = (currentUserArtists | filter: listFilter )">
+
+			  <div class="panel-heading">
+			    <h3 class="panel-title" style="display:inline-block">{{ artist.artistName }}</h3>
+			    <button class="{{ artist.artistID }}" ng-show="!isShowing($index)" ng-click="showDetail($index, artist)">More</button>
+			    <button class="{{ artist.artistID }}" ng-show="isShowing($index)" ng-click="hideDetail()">Less</button>
+			  </div>
+			  <div class="panel-body" ng-show="isShowing($index)">
+			  	<div>Playing {{ dayPlaying }}</div>
+			  	<p>Sounds like {{ relatedArtists }}</p>
+
+					<!-- ALBUMS DIV -->
+					<div class="album-parent" style="white-space: nowrap; overflow-x:scroll">
+						<div ng-repeat="album in albums | unique: 'name' " style="display: inline-block; vertical-align: top">
+							<img src="{{ album.image }}" alt="{{ album.id }}" style="width:125px; margin-top:0; padding: 0 1%"/>
+							<p style="width:120px; white-space: pre-line"><a href="https://play.spotify.com/album/{{ album.id }}">{{ album.name }}</a></p>
+						</div>
+					</div>
+
+					<!-- TOP TRACKS -->
+					<div ng-if="artist.listened === false">
+						<span>Hmm, it looks like you haven't listened to {{ artist.artistName }} yet. Try one of these tracks to get started:
+						<a href="https://play.spotify.com/artist/{{ artistID }}" ng-repeat="track in topTracks">"{{track.name}}"{{$last ? '' : ', '}}</a>
+						</span>
+					</div>
+
+					<!-- WIDGET TO PLAY TOP TRACK (not working with dynamic URL insertion, this would be bae) -->
+					<!-- <iframe src={{embedURL}} width="300" height="80" frameborder="0" allowtransparency="true"></iframe> -->
+
+					<!-- STAR RATING -->
+					<ul class="star-rating">
+		  			<li ng-repeat="star in stars" class="star {{star.class}}" ng-click="changeRating(artist, $index)">
+		    			<i class="fa fa-star"></i>
+		  			</li>
+					</ul>
+
+					<!-- COMMENTS -->
+					<div ng-if="data.rating > 0">
+						<p ng-if="artist.comments !== ''">Your comments:</p>
+						<div ng-if="artist.comments !== '' && !editorEnabled">
+			      	<span>{{ data.comments }}</span>
+			      	<a href="" ng-click="enableEditor()">Edit</a>
+			    	</div>
+			    	<div ng-show="editorEnabled">
+			     		<textarea ng-model="artist.comments" ng-show="editorEnabled" placeholder="What did you think?"></textarea>
+			     	 	<a href="" ng-click="addComment(artist, $index); disableEditor()">Save</a>
+			      	or
+			      	<a href="" ng-click="disableEditor()">cancel</a>
+			    	</div>
+					</div>
+
+					<!-- DELETE ARTIST -->
+					<button class="{{ artist.artistID }}" ng-click="deleteArtist(artist)">Delete This Artist</button>
+
 				</div>
+
 			</div>
-
-			<!-- TOP TRACKS -->
-			<div ng-if="artist.listened === false">
-				<span>Hmm, it looks like you haven't listened to {{ artist.artistName }} yet. Try one of these tracks to get started: 
-				<a href="https://play.spotify.com/artist/{{ artistID }}" ng-repeat="track in topTracks">"{{track.name}}"{{$last ? '' : ', '}}</a>
-				</span>
-			</div>
-
-			<!-- WIDGET TO PLAY TOP TRACK (not working with dynamic URL insertion, this would be bae) -->
-			<!-- <iframe src={{embedURL}} width="300" height="80" frameborder="0" allowtransparency="true"></iframe> -->
-
-			<!-- STAR RATING -->
-			<ul class="star-rating">
-  			<li ng-repeat="star in stars" class="star {{star.class}}" ng-click="changeRating(artist, $index)">
-    			<i class="fa fa-star"></i>
-  			</li>
-			</ul>
-
-			<!-- COMMENTS -->
-			<div ng-if="data.rating > 0">
-				<p ng-if="artist.comments !== ''">Your comments:</p>
-				<div ng-if="artist.comments !== '' && !editorEnabled">
-	      	<span>{{ data.comments }}</span>
-	      	<a href="" ng-click="enableEditor()">Edit</a>
-	    	</div>
-	    	<div ng-show="editorEnabled">
-	     		<textarea ng-model="artist.comments" ng-show="editorEnabled" placeholder="What did you think?"></textarea>
-	     	 	<a href="" ng-click="addComment(artist, $index); disableEditor()">Save</a>
-	      	or
-	      	<a href="" ng-click="disableEditor()">cancel</a>
-	    	</div>
-			</div>
-
-			<!-- DELETE ARTIST -->
-			<button class="{{ artist.artistID }}" ng-click="deleteArtist(artist)">Delete This Artist</button>
-
 		</div>
 	</div>
+
+	<div ng-show="showSchedule===true">
+		<div ng-include="'partials/user-schedule.html'"></div>
+	</div>
+
+</section>

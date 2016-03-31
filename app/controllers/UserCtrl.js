@@ -21,27 +21,44 @@ app.controller("UserCtrl", [
 		// INITIAL POPULATE PAGE
 		// ***********************
 
+		// should only work if user has a list
 		$scope.populateList = () => { // gets a user's list of saved artists
-			$scope.activeIndex = null; // hide details for each artist on list
-			$scope.currentUserArtists = []; // initialize w/ empty array
-			getUser(user.uid) // get user object from firebase
-			.then(
-				userData => {
-					for (let user in userData) {
-						list = userData[user].list; // get user's list key for getList request
-					}
-					return getList(list);
-				},
-				err => console.log(err)
-			).then(
-				listData => {
-					for (let item in listData) { // artist on user listData
-           	listData[item].url = `${firebaseURL}lists/${list}/${item}`; // save firebase ref
-						$scope.currentUserArtists.push(listData[item]); // push each item on list to scoped array
-					}
-				},
-				err => console.log(err)
-			)
+				$scope.activeIndex = null; // hide details for each artist on list
+				$scope.currentUserArtists = []; // initialize w/ empty array
+				getUser(user.uid) // get user object from firebase
+				.then(
+					userData => {
+						for (let user in userData) {
+							if (!userData[user].list) {
+								return; // only continue if user has a list
+							} else {
+								list = userData[user].list; // get user's list key for getList request
+							}
+						}
+						return getList(list);
+					},
+					err => console.log(err)
+				).then(
+					listData => {
+						for (let item in listData) { // artist on user listData
+	           	listData[item].url = `${firebaseURL}lists/${list}/${item}`; // save firebase ref
+							$scope.currentUserArtists.push(listData[item]); // push each item on list to scoped array
+						}
+					},
+					err => console.log(err)
+				)
+			}
+
+		$scope.showSchedule = false;
+
+		$scope.populateFavorites = function (arr) {
+			$scope.favoriteArtists = [];
+			arr.forEach((el, i) => {
+				if (el.listened === true && el.rating >= 3) {
+					$scope.favoriteArtists.push(el);
+				}
+			})
+			$scope.showSchedule = true;
 		}
 
 		// ***********************
@@ -61,6 +78,7 @@ app.controller("UserCtrl", [
 		$scope.switchView = function (filter) {
 			$scope.hideDetail();
 			$scope.populateList();
+			$scope.showSchedule = false;
 			if (!filter) {
 				$scope.listFilter = '';
 			} else {
@@ -73,6 +91,7 @@ app.controller("UserCtrl", [
 		// ***********************
 
 		// Show or hide list item detail on click
+		// !!! should only work if listlength > 0
 		$scope.showDetail = function (index, artist) {
 			$scope.hideDetail(); // closes last card before loading any data for new one
 			$scope.data = $firebaseObject(new Firebase(artist.url)); // set $scope.data to firebase obj for currently open artist
@@ -86,7 +105,11 @@ app.controller("UserCtrl", [
 					} else {
 						 $scope.editorEnabled = false;
 					}
-					return spotify.searchArtist(artistData.artist); // retrieves Spotify artist ID for future requests
+					if (artistData.searchTerm) {
+						return spotify.searchArtist(artistData.searchTerm); // quick fix for dead & co
+					} else {
+						return spotify.searchArtist(artistData.artist); // retrieves Spotify artist ID for future requests
+					}
 				},
 				err => console.log(err)
 			).then(
@@ -123,6 +146,7 @@ app.controller("UserCtrl", [
 		// ***********************
 
 		$scope.changeRating = function (artist, index) {
+			console.log(artist);
 			let newRating = index + 1;
 			let oldRating = $scope.data.rating;
 
