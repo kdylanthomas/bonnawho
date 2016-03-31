@@ -9,8 +9,9 @@ app.controller("LineupCtrl", [
 	"firebaseURL",
 	"get-new-user-list",
 	"get-artist",
+	"spotify",
 
-	function ($scope, getLineup, authenticate, getUser, $http, firebaseURL, getNewUserList, getArtist) {
+	function ($scope, getLineup, authenticate, getUser, $http, firebaseURL, getNewUserList, getArtist, spotify) {
 
 		let user = authenticate.getCurrentUser();
 		let currentUserData;
@@ -31,7 +32,6 @@ app.controller("LineupCtrl", [
 
 		$scope.getArtistsOnList = () => {
 			if (list) {
-				console.log(`${firebaseURL}lists/${list}`);
 				let ref = new Firebase(`${firebaseURL}lists/${list}`);
 				// this returns each artist key that has been added to a user's list
 				ref.orderByChild('name').on('child_added', function (snapshot) {
@@ -84,11 +84,11 @@ app.controller("LineupCtrl", [
 				data => {
 					artistToAdd.artistName = data.artist;
 					artistToAdd.day = data.day;
+					// after artist object is constructed, find current user's list
+					$scope.findUserList();
 				},
 				err => console.log(err)
 			);
-			// after artist object is constructed, find current user's list
-			$scope.findUserList();
 		}
 
 
@@ -116,7 +116,8 @@ app.controller("LineupCtrl", [
 
 		$scope.addArtistToList = function (list) {
 			// store search param to indirectly access a user's new list after it has been created
-			let searchParam = artistToAdd.name;
+			let searchParam = artistToAdd.artistID;
+			console.log('searchParam', searchParam);
 			// *** IF USER DOES NOT YET HAVE A LIST (i.e. this is the user's first artist addition):
 			if (!list) {
 				// post object to lists data (this creates a new list object)
@@ -125,11 +126,13 @@ app.controller("LineupCtrl", [
 					// use the search param to get the list containing the most recently added artist
 					() => {
 						$scope.alreadyAdded = true;
-						getNewUserList(searchParam);
+						console.log(searchParam);
+						return getNewUserList(searchParam);
 					},
 					error => console.log(error)
 				).then(
 					listData => {
+						console.log('listData', listData);
 						// grab key associated with a user's list and pass it into assignList fn
 						for (let key in listData) {
 							list = key;
@@ -162,7 +165,6 @@ app.controller("LineupCtrl", [
 		// uses stored array of user's saved artists to disable "add" buttons of artists already added
 		$scope.checkAgainstUserList = function (artistName) {
 			$scope.alreadyAdded = false;
-			console.log(artistName);
 			let arr = $scope.userSavedArtists;
 			arr.forEach((el, i) => {
 				if (el === artistName) {

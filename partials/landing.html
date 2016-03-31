@@ -1,4 +1,6 @@
 <section>
+	<div ng-include="'partials/navbar.html'" ng-init="checkPath()"></div>
+	<h2>{{ daysUntilBonnaroo }} days until Bonnaroo!</h2>
 	<!-- feature three or more artists -->
 	<h4>Artists of the Moment</h4>
 	<div ng-repeat="artist in randomArtists | unique: 'artist.artist' " >

@@ -1,34 +1,35 @@
 <section>
+
 	<div>
 		<h4>Thursday</h4>
-			<div ng-repeat="artist in currentUserArtists | filter: {day: 'Thursday'}">
-				<div class="panel-body">
-	 				<h5 style="display:inline-block">{{ artist.artistName }}</h5>
-				</div>
-			</div>
+			<ul>
+				<li ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Thursday'})">{{artist.artistName}}</li>
+			</ul>
+			<p ng-show="!filteredArtists.length">no thursday selects</p>
 	</div>
+
 	<div>
 		<h4>Friday</h4>
-			<div ng-repeat="artist in currentUserArtists | filter: {day: 'Friday'} ">
-				<div class="panel-body">
-	 				<h5 style="display:inline-block">{{ artist.artistName }}</h5>
-				</div>
-			</div>
+			<ul>
+				<li ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Friday'})">{{artist.artistName}}</li>
+			</ul>
+			<p ng-show="!filteredArtists.length">no friday selects</p>
 	</div>
+
 	<div>
 		<h4>Saturday</h4>
-			<div ng-repeat="artist in currentUserArtists | filter: {day: 'Saturday'} ">
-				<div class="panel-body">
-	 				<h5 style="display:inline-block">{{ artist.artistName }}</h5>
-				</div>
-			</div>
+			<ul>
+				<li ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Saturday'})">{{artist.artistName}}</li>
+			</ul>
+			<p ng-show="!filteredArtists.length">no saturday selects</p>
 	</div>
+
 	<div>
 		<h4>Sunday</h4>
-			<div ng-repeat="artist in currentUserArtists | filter: {day: 'Sunday'} ">
-				<div class="panel-body">
-	 				<h5 style="display:inline-block">{{ artist.artistName }}</h5>
-				</div>
-			</div>
+		<ul>
+			<li ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Sunday'})">{{artist.artistName}}</li>
+		</ul>
+		<p ng-show="!filteredArtists.length">no sunday selects</p>
 	</div>
+
 </section>
