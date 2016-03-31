@@ -5,11 +5,13 @@ $dark-green: rgb(26,114,99);
 .filter-list {
 	margin-bottom: 2%;
 	text-align: center;
+	font-size: 1.1em;
 	a {
 		color: #fff;
 		text-decoration: none;
 	}
 	a:hover {
+		// text-shadow: 2px 2px 2px rgb(140,232,171);
 		font-weight: bold;
 	}
 }
@@ -48,6 +50,10 @@ $dark-green: rgb(26,114,99);
 			border-radius: 10px;
 			// width: 90%;
 
+		}
+
+		blockquote {
+			font-size: 1em;
 		}
 
 	}

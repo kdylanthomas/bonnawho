@@ -60,7 +60,7 @@
 			      </div>
 			      <div class="modal-footer footer-buttons">
 			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			        <button ng-if="alreadyAdded===true" type="button" disabled="disabled" class="btn btn-default" id="{{ artist.key }}">Added!</button>
+			        <button ng-if="alreadyAdded===true" type="button" disabled="disabled" class="btn btn-default added-btn" id="{{ artist.key }}">Added!</button>
 			        <button ng-if="!alreadyAdded" type="button" class="btn btn-default" id="{{ artist.key }}" ng-click="buildArtistObject($event, $index)">Add To List</button>
 			      </div>
 			    </div>

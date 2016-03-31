@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Comfortaa:400,300,700);
 .star-rating {
   margin: 0;
   padding: 0;
@@ -48,7 +49,7 @@ h4 {
     color: #fff; }
 
 .view-lineup {
-  margin: 5% 0;
+  margin: 10% 0;
   background-color: #1a7263;
   width: 100%;
   height: 60px;
@@ -88,6 +89,10 @@ h4 {
     clear: both; }
   .lineup-detail .main-artist-content {
     margin-bottom: 1%; }
+  .lineup-detail .added-btn {
+    background-color: #8ce8ab; }
+  .lineup-detail .added-btn:hover {
+    background-color: #8ce8ab; }
 
 .panel-container {
   margin-top: 2%; }
@@ -115,7 +120,8 @@ h4 {
 
 .filter-list {
   margin-bottom: 2%;
-  text-align: center; }
+  text-align: center;
+  font-size: 1.1em; }
   .filter-list a {
     color: #fff;
     text-decoration: none; }
@@ -146,9 +152,21 @@ h4 {
     .panel-custom .panel-body-custom .user-inputs {
       padding-left: 2%;
       border-radius: 10px; }
+    .panel-custom .panel-body-custom blockquote {
+      font-size: 1em; }
+
+.schedule-day {
+  text-align: center; }
+
+.day-header {
+  color: #8ce8ab; }
+
+.artist-by-day {
+  font-size: 1.25em; }
 
 body {
-  background: url("../images/main-background.png"); }
+  background: url("../images/main-background.png");
+  font-family: 'Comfortaa', cursive; }
 
 h2 {
   color: #000; }

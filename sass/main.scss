@@ -3,9 +3,13 @@
 @import 'nav';
 @import 'lineup';
 @import 'user-list';
+@import 'schedule';
+
+@import url(https://fonts.googleapis.com/css?family=Comfortaa:400,300,700);
 
 body {
 	background: url('../images/main-background.png');
+	font-family: 'Comfortaa', cursive;
 }
 
 h2 {
