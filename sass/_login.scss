@@ -1,0 +1,40 @@
+$panel-color: rgb(119,0,149);
+
+.bonnawho-title {
+	margin-top: 20%;
+}
+
+.subheader {
+	color: #fff;
+	text-align: center;
+	text-shadow: 3px 3px 3px rgb(23,0,43);
+	padding-bottom: 2%;
+	// margin-bottom: 2%;
+}
+
+.login-page {
+	height: 710px;
+	background: url('../images/ferris-wheel.jpeg') no-repeat;
+}
+
+.inputs {
+	text-align: center;
+	background-color: rgb(23,0,43);
+	border-radius: 10px;
+	padding: 1% 0;
+	color: #fff;
+	p {
+		font-size: 1.15em;
+		padding-bottom: 1%;
+	}
+	input {
+		border: 1px solid $panel-color;
+		border-radius: 5px;
+		background-color: $panel-color;
+	}
+	.login-btn {
+		margin-top: 2%;
+		color: #000;
+		background-color: rgb(180,255,183);
+	}
+}

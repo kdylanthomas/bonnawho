@@ -50,6 +50,7 @@ h4 {
 }
 
 .view-lineup {
+	font-size: 1.25em;
 	margin: 10% 0;
 	background-color: $dark-green;
 	width: 100%;
@@ -57,4 +58,8 @@ h4 {
 	color: #fff;
 	border-radius: 1%;
 	box-shadow: 5px 5px 5px $dark-purple-bg;
+}
+.view-lineup:hover {
+	color: #fff;
+	font-weight: strong;
 }

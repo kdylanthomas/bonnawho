@@ -49,6 +49,7 @@ h4 {
     color: #fff; }
 
 .view-lineup {
+  font-size: 1.25em;
   margin: 10% 0;
   background-color: #1a7263;
   width: 100%;
@@ -56,6 +57,10 @@ h4 {
   color: #fff;
   border-radius: 1%;
   box-shadow: 5px 5px 5px #17002b; }
+
+.view-lineup:hover {
+  color: #fff;
+  font-weight: strong; }
 
 .page-navigation {
   width: 100%;
@@ -66,6 +71,9 @@ h4 {
   .page-navigation .nav-links {
     text-decoration: none;
     color: #fff; }
+  .page-navigation .logo {
+    margin-top: 5%;
+    padding-right: 10%; }
 
 .lineup-header {
   color: #fff;
@@ -128,6 +136,22 @@ h4 {
   .filter-list a:hover {
     font-weight: bold; }
 
+.no-matches {
+  text-align: center;
+  font-size: 1.5em;
+  color: #8ce8ab; }
+  .no-matches a {
+    font-size: 1em;
+    color: #8ce8ab; }
+  .no-matches a:hover {
+    color: #fff; }
+  .no-matches .lineup-button {
+    border-radius: 0;
+    padding: 1%;
+    margin-top: 2%;
+    background-color: #1a7263;
+    color: #fff; }
+
 .panel-custom {
   padding: 0;
   border: 1px solid #17002b;
@@ -136,6 +160,9 @@ h4 {
   .panel-custom .panel-heading-custom {
     background-color: #530079;
     color: #8ce8ab; }
+    .panel-custom .panel-heading-custom .heading-name {
+      display: inline-block;
+      font-size: 1.25em; }
     .panel-custom .panel-heading-custom .hamburger {
       color: #fff;
       float: right;
@@ -149,6 +176,19 @@ h4 {
       .panel-custom .panel-body-custom .basic-info p {
         margin: 0;
         padding: 0; }
+    .panel-custom .panel-body-custom .album-parent {
+      white-space: nowrap;
+      overflow-x: scroll; }
+      .panel-custom .panel-body-custom .album-parent .album {
+        display: inline-block;
+        vertical-align: top; }
+        .panel-custom .panel-body-custom .album-parent .album img {
+          width: 125px;
+          margin-top: 0;
+          padding: 0 1%; }
+        .panel-custom .panel-body-custom .album-parent .album p {
+          width: 120px;
+          white-space: pre-line; }
     .panel-custom .panel-body-custom .user-inputs {
       padding-left: 2%;
       border-radius: 10px; }
@@ -163,6 +203,37 @@ h4 {
 
 .artist-by-day {
   font-size: 1.25em; }
+
+.bonnawho-title {
+  margin-top: 20%; }
+
+.subheader {
+  color: #fff;
+  text-align: center;
+  text-shadow: 3px 3px 3px #17002b;
+  padding-bottom: 2%; }
+
+.login-page {
+  height: 710px;
+  background: url("../images/ferris-wheel.jpeg") no-repeat; }
+
+.inputs {
+  text-align: center;
+  background-color: #17002b;
+  border-radius: 10px;
+  padding: 1% 0;
+  color: #fff; }
+  .inputs p {
+    font-size: 1.15em;
+    padding-bottom: 1%; }
+  .inputs input {
+    border: 1px solid #770095;
+    border-radius: 5px;
+    background-color: #770095; }
+  .inputs .login-btn {
+    margin-top: 2%;
+    color: #000;
+    background-color: #b4ffb7; }
 
 body {
   background: url("../images/main-background.png");
