@@ -1,13 +1,13 @@
-<nav class="navbar navbar-default" ng-controller="NavCtrl" ng-init="checkPath()">
-  	<div class="container-fluid">
+<nav class="navbar navbar-default page-navigation" ng-controller="NavCtrl" ng-init="checkPath()">
+  	<div class="container-fluid nav-bg">
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		 	<ul class="nav navbar-nav">
-		 		<li><a href="#/welcome">Home</a></li>
-	    	<li><a href="#/lineup">View Lineup</a></li>
-	    	<li><a href="/#/user">Your List</a></li>
+		 		<li><a href="#/welcome"><span class="nav-links">Home</span></a></li>
+	    	<li><a href="#/lineup"><span class="nav-links">View Lineup</span></a></li>
+	    	<li><a href="/#/user"><span class="nav-links">Your List</span></a></li>
 	  	</ul>
 	  	<ul class="nav navbar-nav navbar-right">
-	    	<li><a href="#/login" ng-click="logout()">Log Out</a></li>
+	    	<li><a href="#/login" ng-click="logout()"><span class="nav-links">Log Out</span></a></li>
 	  	</ul>
 		</div>
  	</div>

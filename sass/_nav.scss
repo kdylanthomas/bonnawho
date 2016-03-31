@@ -1,0 +1,14 @@
+$background-color: rgb(29,9,52);
+
+.page-navigation {
+	width: 100%;
+	border: 1px solid $background-color;
+	border-radius: 0;
+	box-shadow: 0 8px 6px -6px #000;
+	background-color: $background-color;
+
+	.nav-links {
+		text-decoration: none;
+		color: #fff;
+	}
+}
