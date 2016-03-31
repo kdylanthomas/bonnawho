@@ -113,6 +113,40 @@ h4 {
         font-size: 1.5em;
         color: #fff; }
 
+.filter-list {
+  margin-bottom: 2%;
+  text-align: center; }
+  .filter-list a {
+    color: #fff;
+    text-decoration: none; }
+  .filter-list a:hover {
+    font-weight: bold; }
+
+.panel-custom {
+  padding: 0;
+  border: 1px solid #17002b;
+  border-radius: 5px;
+  box-shadow: 10px 5px 5px #17002b; }
+  .panel-custom .panel-heading-custom {
+    background-color: #530079;
+    color: #8ce8ab; }
+    .panel-custom .panel-heading-custom .hamburger {
+      color: #fff;
+      float: right;
+      font-size: 1.1em; }
+  .panel-custom .panel-body-custom {
+    color: #000; }
+    .panel-custom .panel-body-custom .basic-info {
+      color: #4C4C4C; }
+      .panel-custom .panel-body-custom .basic-info p:first-child {
+        font-style: italic; }
+      .panel-custom .panel-body-custom .basic-info p {
+        margin: 0;
+        padding: 0; }
+    .panel-custom .panel-body-custom .user-inputs {
+      padding-left: 2%;
+      border-radius: 10px; }
+
 body {
   background: url("../images/main-background.png"); }
 
