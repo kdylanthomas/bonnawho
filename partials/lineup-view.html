@@ -1,63 +1,73 @@
 <div ng-include="'partials/navbar.html'" ng-init="checkPath()"></div>
 
 <section>
-
-	<!-- SEARCH FIELD -->
-	<input type="text" ng-model="searchArtist" class="form-control" placeholder="Find a specific artist"/>
-
-	<!-- DROPDOWN TO APPLY FILTERS -->
-	<div class="dropdown">
-	  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-	    Sort by...
-	    <span class="caret"></span>
-	  </button>
-	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-	    <li><a href="#/lineup" ng-click="changeFilter('artist')">Alphabetical</a></li>
-	    <li><a href="#/lineup" ng-click="changeFilter('billing')">Headliners First</a></li>
-	    <li role="separator" class="divider"></li>
-	    <li class="dropdown-header">By Day:</li>
-	    <li><a href="#/lineup" ng-click="changeFilter('billing', 'Thursday')">Thursday</a></li>
-	    <li><a href="#/lineup" ng-click="changeFilter('billing', 'Friday')">Friday</a></li>
-	    <li><a href="#/lineup" ng-click="changeFilter('billing', 'Saturday')">Saturday</a></li>
-	    <li><a href="#/lineup" ng-click="changeFilter('billing', 'Sunday')">Sunday</a></li>
-	  </ul>
+	<h2 class="lineup-header">The 2016 Bonnaroo Lineup</h2>
+	<div class="row user-filters">
+		<!-- SEARCH FIELD -->
+		<div class="col-md-3 col-md-offset-4">
+		<input type="text" ng-model="searchArtist" class="form-control search-bar" placeholder="Find a specific artist"/>
+		</div>
+		<!-- DROPDOWN TO APPLY FILTERS -->
+		<div class="col-md-3">
+		<div class="dropdown">
+		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+		    Sort by...
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+		    <li><a href="#/lineup" ng-click="changeFilter('artist')">Alphabetical</a></li>
+		    <li><a href="#/lineup" ng-click="changeFilter('billing')">Headliners First</a></li>
+		    <li role="separator" class="divider"></li>
+		    <li class="dropdown-header">By Day:</li>
+		    <li><a href="#/lineup" ng-click="changeFilter('billing', 'Thursday')">Thursday</a></li>
+		    <li><a href="#/lineup" ng-click="changeFilter('billing', 'Friday')">Friday</a></li>
+		    <li><a href="#/lineup" ng-click="changeFilter('billing', 'Saturday')">Saturday</a></li>
+		    <li><a href="#/lineup" ng-click="changeFilter('billing', 'Sunday')">Sunday</a></li>
+		  </ul>
+		</div>
+	</div>
 	</div>
 
 	<!-- ARTIST PANELS -->
-	<div class="panel panel-default" ng-repeat="artist in lineup | orderBy: chosenFilter | filter: {artist: searchArtist} || { day: selectedDay }">
+	<div class="panel-container">
+		<div class="panel panel-default artist-panel"
+			ng-repeat="artist in lineup | orderBy: chosenFilter | filter: { day: selectedDay } || {artist: searchArtist} ">
 
-  	<div class="panel-body">
-   		<h5 style="display:inline-block">{{ artist.artist }}</h5>
-   		<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal--{{artist.key}}" ng-click="checkAgainstUserList(artist.artist)">
-  		+
-			</button>
-  	</div>
+	  	<div class="panel-body artist-brief">
+	   		<h5 style="display:inline-block">{{ artist.artist }}</h5>
+	  			<a href="" class="open-detail" data-toggle="modal" data-target="#modal--{{artist.key}}" ng-click="checkAgainstUserList(artist.artist)">
+	  				<span class="glyphicon glyphicon-plus plus-sign" aria-hidden="true"></span>
+	  			</a>
+	   		<!-- <button type="button" class="btn btn-primary btn-sm detail-btn" data-toggle="modal" data-target="#modal--{{artist.key}}" ng-click="checkAgainstUserList(artist.artist)"> -->
+				<!-- </button> -->
+	  	</div>
 
-  	<!-- MODALS -->
-		<div class="modal fade" id="modal--{{artist.key}}" tabindex="-1" role="dialog">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title">{{ artist.artist }}</h4>
-		      </div>
-		      <div class="modal-body main-artist-content">
-		      	<div class="description-container">
-		        	<p class="artist-description">{{ artist.description }}</p>
-		        </div>
-		        <div class="image-container">
-		        	<img class="artist-img" src="{{ artist.image }}" />
-		        </div>
-		      </div>
-		      <div class="modal-footer footer-buttons">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		        <button ng-if="alreadyAdded===true" type="button" disabled="disabled" class="btn btn-default" id="{{ artist.key }}">Added!</button>
-		        <button ng-if="!alreadyAdded" type="button" class="btn btn-default" id="{{ artist.key }}" ng-click="buildArtistObject($event, $index)">Add To List</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+	  	<!-- MODALS -->
+			<div class="modal fade lineup-detail" id="modal--{{artist.key}}" tabindex="-1" role="dialog">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">{{ artist.artist }}</h4>
+			      </div>
+			      <div class="modal-body main-artist-content">
+			      	<div class="description-container">
+			        	<p class="artist-description">{{ artist.description }}</p>
+			        </div>
+			        <div class="image-container">
+			        	<img class="artist-img" src="{{ artist.image }}" />
+			        </div>
+			      </div>
+			      <div class="modal-footer footer-buttons">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        <button ng-if="alreadyAdded===true" type="button" disabled="disabled" class="btn btn-default" id="{{ artist.key }}">Added!</button>
+			        <button ng-if="!alreadyAdded" type="button" class="btn btn-default" id="{{ artist.key }}" ng-click="buildArtistObject($event, $index)">Add To List</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
 
+	</div>
 	</div>
 
 

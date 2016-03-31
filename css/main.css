@@ -66,6 +66,53 @@ h4 {
     text-decoration: none;
     color: #fff; }
 
+.lineup-header {
+  color: #fff;
+  text-align: center; }
+
+.lineup-detail {
+  color: #000; }
+  .lineup-detail .image-container {
+    width: 30%;
+    padding-bottom: 2%;
+    float: left; }
+    .lineup-detail .image-container .artist-img {
+      width: 200px; }
+  .lineup-detail h4 {
+    text-align: left; }
+  .lineup-detail .description-container {
+    width: 60%;
+    float: right;
+    color: #000; }
+  .lineup-detail .footer-buttons {
+    clear: both; }
+  .lineup-detail .main-artist-content {
+    margin-bottom: 1%; }
+
+.panel-container {
+  margin-top: 2%; }
+  .panel-container .artist-panel {
+    width: 30%;
+    margin-left: 2%;
+    display: inline-block;
+    background-color: #770095;
+    color: #fff;
+    border: 2px solid #17002b;
+    box-shadow: 2px 2px 2px #17002b; }
+    .panel-container .artist-panel .artist-brief {
+      padding: 3%;
+      position: relative; }
+      .panel-container .artist-panel .artist-brief h5 {
+        display: inline-block;
+        font-size: 1.25em; }
+    .panel-container .artist-panel .open-detail {
+      position: absolute;
+      right: 5%;
+      top: 30%; }
+      .panel-container .artist-panel .open-detail .plus-sign {
+        font-size: 1.5em;
+        color: #fff; }
+
 body {
   background: url("../images/main-background.png"); }
 

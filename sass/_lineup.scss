@@ -1,0 +1,73 @@
+$panel-color: rgb(119,0,149);
+$dark-purple-bg: rgb(23,0,43);
+
+.lineup-header {
+	color: #fff;
+	text-align: center;
+}
+
+.lineup-detail {
+	color: #000;
+	.image-container {
+	  width: 30%;
+	  padding-bottom: 2%;
+	  float: left;
+		.artist-img {
+		  width: 200px;
+		}
+	}
+	h4 {
+		text-align: left;
+	}
+	.description-container {
+	  width: 60%;
+	  float: right;
+	  color: #000;
+	}
+	.footer-buttons {
+	  clear: both;
+	}
+	.main-artist-content {
+  	margin-bottom: 1%;
+	}
+}
+
+
+.panel-container {
+	margin-top: 2%;
+
+	.artist-panel {
+		width: 30%;
+		margin-left: 2%;
+		display: inline-block;
+		background-color: $panel-color;
+		color: #fff;
+		border: 2px solid $dark-purple-bg;
+		box-shadow: 2px 2px 2px $dark-purple-bg;
+
+		.artist-brief {
+			padding: 3%;
+			position: relative;
+			h5 {
+				display: inline-block;
+				font-size: 1.25em;
+			}
+
+		}
+
+		.open-detail {
+			// background-color: rgb(29,17,68);
+			// border: 1px solid rgb(29,17,68);
+			position: absolute;
+			right: 5%;
+			top: 30%;
+			.plus-sign {
+				font-size: 1.5em;
+				color: #fff;
+				// text-shadow: 2px 2px 2px $dark-purple-bg;
+			}
+		}
+	}
+
+
+}
