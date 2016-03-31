@@ -17,18 +17,31 @@
 		<p ng-show="!filteredArtists.length" ng-cloak>You don't have any artists saved to this list :(</p>
 
 		<div class="row">
-			<div class="col-md-6 col-md-offset-3 panel panel-default" ng-repeat="artist in filteredArtists = (currentUserArtists | filter: listFilter )">
+			<div class="col-md-6 col-md-offset-3 panel panel-default panel-custom" ng-repeat="artist in filteredArtists = (currentUserArtists | filter: listFilter )">
 
-			  <div class="panel-heading">
+			  <div class="panel-heading panel-heading-custom">
 			    <h3 class="panel-title" style="display:inline-block">{{ artist.artistName }}</h3>
-			    <button class="{{ artist.artistID }}" ng-show="!isShowing($index)" ng-click="showDetail($index, artist)">More</button>
-			    <button class="{{ artist.artistID }}" ng-show="isShowing($index)" ng-click="hideDetail()">Less</button>
+			    <a href="" class="{{ artist.artistID }}" ng-show="!isShowing($index)" ng-click="showDetail($index, artist)">
+	  				<span class="glyphicon glyphicon-menu-hamburger hamburger" aria-hidden="true"></span>
+	  			</a>
+	  			<a href="" class="{{ artist.artistID }}" ng-show="isShowing($index)" ng-click="hideDetail()">
+	  				<span class="glyphicon glyphicon-menu-hamburger hamburger" aria-hidden="true"></span>
+	  			</a>
 			  </div>
-			  <div class="panel-body" ng-show="isShowing($index)">
-			  	<div>Playing {{ dayPlaying }}</div>
-			  	<p>Sounds like {{ relatedArtists }}</p>
+
+			  <div class="panel-body panel-body-custom" ng-show="isShowing($index)">
+			  	<div class="row">
+				  	<div class="basic-info col-md-10">
+				  		<p>Playing {{ dayPlaying }}</p>
+				  		<p>Sounds like {{ relatedArtists }}</p>
+				  	</div>
+				  	<div class="delete-button col-md-2">
+				  		<button class="{{ artist.artistID }} btn delete-button" ng-click="deleteArtist(artist)">Delete</button>
+				  	</div>
+			  	</div>
 
 					<!-- ALBUMS DIV -->
+					<h5>{{ artist.artistName }}'s albums:</h5>
 					<div class="album-parent" style="white-space: nowrap; overflow-x:scroll">
 						<div ng-repeat="album in albums | unique: 'name' " style="display: inline-block; vertical-align: top">
 							<img src="{{ album.image }}" alt="{{ album.id }}" style="width:125px; margin-top:0; padding: 0 1%"/>
@@ -45,31 +58,38 @@
 
 					<!-- WIDGET TO PLAY TOP TRACK (not working with dynamic URL insertion, this would be bae) -->
 					<!-- <iframe src={{embedURL}} width="300" height="80" frameborder="0" allowtransparency="true"></iframe> -->
+					<hr></hr>
+					<h5 ng-if="artist.rating === 0">So...what do you think?</h5>
+					<h5 ng-if="artist.rating > 0">Here's what you have said about this artist: </h5>
+					<div class="user-inputs">
+						<!-- STAR RATING -->
+						<h7>Your rating:</h7>
+						<ul class="star-rating">
+			  			<li ng-repeat="star in stars" class="star {{star.class}}" ng-click="changeRating(artist, $index)">
+			    			<i class="fa fa-star"></i>
+			  			</li>
+						</ul>
 
-					<!-- STAR RATING -->
-					<ul class="star-rating">
-		  			<li ng-repeat="star in stars" class="star {{star.class}}" ng-click="changeRating(artist, $index)">
-		    			<i class="fa fa-star"></i>
-		  			</li>
-					</ul>
+						<!-- COMMENTS -->
 
-					<!-- COMMENTS -->
-					<div ng-if="data.rating > 0">
-						<p ng-if="artist.comments !== ''">Your comments:</p>
-						<div ng-if="artist.comments !== '' && !editorEnabled">
-			      	<span>{{ data.comments }}</span>
-			      	<a href="" ng-click="enableEditor()">Edit</a>
-			    	</div>
-			    	<div ng-show="editorEnabled">
-			     		<textarea ng-model="artist.comments" ng-show="editorEnabled" placeholder="What did you think?"></textarea>
-			     	 	<a href="" ng-click="addComment(artist, $index); disableEditor()">Save</a>
-			      	or
-			      	<a href="" ng-click="disableEditor()">cancel</a>
-			    	</div>
+						<div ng-if="data.rating > 0">
+							<p ng-if="artist.comments !== ''">Your comments:</p>
+							<div ng-if="artist.comments !== '' && !editorEnabled">
+				      	<span>{{ data.comments }}</span>
+				      	<a href="" ng-click="enableEditor()">Edit</a>
+				    	</div>
+				    	<div ng-show="editorEnabled">
+				     		<textarea ng-model="artist.comments" ng-show="editorEnabled" placeholder="What did you think?"></textarea>
+				     	 	<a href="" ng-click="addComment(artist, $index); disableEditor()">Save</a>
+				      	or
+				      	<a href="" ng-click="disableEditor()">cancel</a>
+				    	</div>
+						</div>
+
 					</div>
 
 					<!-- DELETE ARTIST -->
-					<button class="{{ artist.artistID }}" ng-click="deleteArtist(artist)">Delete This Artist</button>
+					
 
 				</div>
 

@@ -1,0 +1,54 @@
+$panel-color: rgb(119,0,149);
+$dark-purple-bg: rgb(23,0,43);
+$dark-green: rgb(26,114,99);
+
+.filter-list {
+	margin-bottom: 2%;
+	text-align: center;
+	a {
+		color: #fff;
+		text-decoration: none;
+	}
+	a:hover {
+		font-weight: bold;
+	}
+}
+
+.panel-custom {
+	padding: 0;
+	border: 1px solid $dark-purple-bg;
+	border-radius: 5px;
+	box-shadow: 10px 5px 5px $dark-purple-bg;
+	.panel-heading-custom {
+	  background-color: rgb(83,0,121);
+  	color: rgb(140,232,171);
+		.hamburger {
+			color: #fff;
+			float: right;
+			font-size: 1.1em;
+		}
+	}
+	.panel-body-custom {
+		color: #000;
+
+		.basic-info {
+			p:first-child {
+				font-style: italic;
+			}
+			p {
+				margin: 0;
+				padding: 0;
+			}
+			color: #4C4C4C;
+		}
+
+		.user-inputs {
+			// border: 1px solid $dark-purple-bg;
+			padding-left: 2%;
+			border-radius: 10px;
+			// width: 90%;
+
+		}
+
+	}
+}
