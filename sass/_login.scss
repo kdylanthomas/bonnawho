@@ -1,7 +1,10 @@
 $panel-color: rgb(119,0,149);
 
-.bonnawho-title {
-	margin-top: 20%;
+.title-container {
+	text-align: center;
+	.bonnawho-title {
+		margin-top: 15%;
+	}
 }
 
 .subheader {
@@ -15,6 +18,7 @@ $panel-color: rgb(119,0,149);
 .login-page {
 	height: 710px;
 	background: url('../images/ferris-wheel.jpeg') no-repeat;
+	background-size: cover;
 }
 
 .inputs {

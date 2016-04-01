@@ -27,10 +27,14 @@ app.controller("LineupCtrl", [
 			comments: ""
 		}
 
-		// $scope.columnBreak = 3;
-		// $scope.startNewRow = function (index, count) {
-		// 	return ((index) % count) === 0;
-		// };
+		$scope.getRandomArtist = () => {
+			let min = 0;
+			let max = $scope.lineup.length;
+			let randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+			console.log(randomNum);
+			let key = $scope.lineup[randomNum].key;
+			$(`#modal--${key}`).modal("show");
+		}
 
 		// store a user's already-added artists--get this data immediately after getting lineup data
 		$scope.userSavedArtists = [];
