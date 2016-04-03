@@ -3,7 +3,7 @@ $panel-color: rgb(119,0,149);
 .title-container {
 	text-align: center;
 	.bonnawho-title {
-		margin-top: 15%;
+		margin-top: 10%;
 	}
 }
 
@@ -25,6 +25,7 @@ $panel-color: rgb(119,0,149);
 	text-align: center;
 	background-color: rgb(23,0,43);
 	border-radius: 10px;
+	box-shadow: 5px 5px 5px #3D3D3D;
 	padding: 1% 0;
 	color: #fff;
 	p {

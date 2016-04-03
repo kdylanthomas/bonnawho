@@ -21,7 +21,6 @@ app.controller("UserCtrl", [
 		// INITIAL POPULATE PAGE
 		// ***********************
 
-		// should only work if user has a list
 		$scope.populateList = () => { // gets a user's list of saved artists
 				$scope.activeIndex = null; // hide details for each artist on list
 				$scope.currentUserArtists = []; // initialize w/ empty array
@@ -91,10 +90,10 @@ app.controller("UserCtrl", [
 		// ***********************
 
 		// Show or hide list item detail on click
-		// !!! should only work if listlength > 0
 		$scope.showDetail = function (index, artist) {
-			$scope.hideDetail(); // closes last card before loading any data for new one
+			$scope.data = null;
 			$scope.data = $firebaseObject(new Firebase(artist.url)); // set $scope.data to firebase obj for currently open artist
+			$scope.hideDetail(); // closes last card before loading any data for new one
 			getArtist(artist.artistID) // get everything i want from firebase artist object
 			.then(
 				artistData => { // if I add images to database, grab them here (all Firebase info should come here)
@@ -131,6 +130,7 @@ app.controller("UserCtrl", [
 		// ***********************
 
 		$scope.deleteArtist = function (artist) { // delete
+			console.log('artist', artist);
 			$http.delete(`${artist.url}.json`)
 			.success(
 				() => {
@@ -148,32 +148,16 @@ app.controller("UserCtrl", [
 		$scope.changeRating = function (artist, index) {
 			console.log(artist);
 			let newRating = index + 1;
-			let oldRating = $scope.data.rating;
-
+			artist.rating = newRating;
 			let listItemRef = new Firebase(artist.url);
-			let firebaseObj = $firebaseObject(listItemRef);
-
-			firebaseObj.$bindTo($scope, "data").then(() => {
-				console.log($scope.data);
-				$scope.data.rating = newRating;
-				listItemRef.update({ rating: newRating });
-				listItemRef.update({listened: true});
-			})
-
+			listItemRef.update({ rating: newRating });
+			listItemRef.update({ listened: true });
 			$scope.fillStars(newRating); // reflect new rating with stars
 		}
 
-		$scope.addComment = function (artist, index) {
-			// console.log(index);
+		$scope.addComment = function (artist) {
 			let listItemRef = new Firebase(artist.url);
-			let firebaseObj = $firebaseObject(listItemRef);
-
-			firebaseObj.$bindTo($scope, "data").then(() => {
-				console.log($scope.data);
-				$scope.data.comments = artist.comments;
-				// $scope.data.comments = $scope.currentUserArtists[index].comments;
-				listItemRef.update({comments: $scope.data.comments});
-			});
+			listItemRef.update({comments: artist.comments});
 		}
 
 	  $scope.enableEditor = function() {

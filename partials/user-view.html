@@ -80,7 +80,7 @@
 								<a href="" ng-if="!editorEnabled" ng-click="enableEditor()">[edit]</a>
 							</p>
 							<div ng-if="artist.comments !== '' && !editorEnabled">
-				      	<blockquote>{{ data.comments }}</blockquote>
+				      	<blockquote>{{ artist.comments }}</blockquote>
 				    	</div>
 				    	<div ng-show="artist.comments === '' || editorEnabled">
 				     		<textarea ng-model="artist.comments" ng-show="editorEnabled" placeholder="What did you think?"></textarea>
