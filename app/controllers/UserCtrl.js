@@ -68,6 +68,9 @@ app.controller("UserCtrl", [
 			$scope.hideDetail();
 			$scope.populateList();
 			$scope.showSchedule = false;
+			// // show "bummer!" message if no artists fit filter
+
+			// define filter
 			if (!filter) {
 				$scope.listFilter = '';
 			} else {
@@ -85,6 +88,7 @@ app.controller("UserCtrl", [
 			})
 			$scope.showSchedule = true;
 		}
+
 
 		// ***********************
 		// BUILD ARTIST DETAIL VIEW

@@ -13,10 +13,10 @@
 
 	<!-- USER'S SAVED ARTISTS -->
 	<div ng-show="showSchedule===false">
-		<div class="no-matches"  ng-show="!filteredArtists.length" ng-cloak>
-			<p ng-cloak>Bummer! You don't have any artists saved to this list.</p>
-			<button class="btn lineup-button" onclick="location.href='#/lineup'">Find More Artists</button>
-			<!-- <a href="#/lineup">Back to the lineup</a> -->
+
+		<div class="no-matches">
+			<p ng-show="!filteredArtists.length">Bummer! You don't have any artists saved to this list.</p>
+			<button class="btn lineup-button"  ng-show="!filteredArtists.length" onclick="location.href='#/lineup'">Find More Artists</button>
 		</div>
 
 		<div class="row">
