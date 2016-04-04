@@ -1,15 +1,15 @@
 <section>
 	<div ng-include="'partials/navbar.html'" ng-init="checkPath()"></div>
 	<h2 class="countdown">{{ daysUntilBonnaroo }} days until Bonnaroo!</h2>
-	<!-- feature three or more artists -->
+
 	<div class="row">
+
 		<div class="col-md-3 col-md-offset-3">
 			<h4>Artists of the Moment</h4>
 			<div class="random-artist-container">
 				<div ng-repeat="artist in randomArtists | unique: 'artist.artist' " >
 					<div class="random-artist-header">
 						<span class="random-artist-name">{{ artist.artist }}</span>
-						<!-- <h5 class="random-artist-name">{{ artist.artist }}</h5> -->
 					</div>
 					<img class="random-artist-pic" src="{{ artist.image }}" alt="{{ artist.artist }}" />
 				</div>
@@ -17,13 +17,12 @@
 		</div>
 
 		<div class="col-md-3 playlist">
-			<!-- link to spotify playlist -->
 			<h4>Sample the Lineup</h4>
-			<!-- EMBED OPTION -->
 			<div class="random-artist-container">
 				<iframe src="https://embed.spotify.com/?uri=spotify:user:127594937:playlist:2CURfLLwCnbjrHqYq3sTbe" width="290" height="380" frameborder="0" allowtransparency="true"></iframe>
 			</div>
 		</div>
+
 	</div>
 
 	<div class="row">
@@ -31,5 +30,5 @@
 			<button class="btn view-lineup" onclick="location.href='#/lineup'">See The Full Bonnaroo Lineup</button>
 		</div>
 	</div>
-	<!-- LINK OPTION -->
+
 </section>

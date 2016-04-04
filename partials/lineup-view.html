@@ -37,7 +37,7 @@
 			ng-repeat="artist in lineup | orderBy: chosenFilter | filter: { day: selectedDay } | filter: {artist: searchArtist}">
 
 	  	<div class="panel-body artist-brief">
-	   		<h5 style="display:inline-block">{{ artist.artist }}</h5>
+	   		<h5>{{ artist.artist }}</h5>
 	  			<a href="" class="open-detail" data-toggle="modal" data-target="#modal--{{artist.key}}" ng-click="checkAgainstUserList(artist.artist)">
 	  				<span class="glyphicon glyphicon-plus plus-sign" aria-hidden="true"></span>
 	  			</a>
@@ -62,7 +62,7 @@
 			      <div class="modal-footer footer-buttons">
 			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			        <button ng-if="alreadyAdded===true" type="button" disabled="disabled" class="btn btn-default added-btn" id="{{ artist.key }}">Added!</button>
-			        <button ng-if="!alreadyAdded" type="button" class="btn btn-default" id="{{ artist.key }}" ng-click="buildArtistObject($event, $index)">Add To List</button>
+			        <button ng-if="!alreadyAdded" type="button" class="btn btn-default" ng-click="buildArtistObject(artist.key, $index)">Add To List</button>
 			      </div>
 			    </div>
 			  </div>
