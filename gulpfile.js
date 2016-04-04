@@ -4,7 +4,7 @@ var sass = require('gulp-sass');
 var webserver = require('gulp-webserver');
 
 
-gulp.task('build-dev', ['sass', 'watch']);
+gulp.task('default', ['sass', 'watch']);
 
 gulp.task('watch', function() {
   gulp.watch('sass/**/*.scss', ['sass']);

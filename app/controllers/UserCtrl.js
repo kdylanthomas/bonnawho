@@ -50,16 +50,6 @@ app.controller("UserCtrl", [
 
 		$scope.showSchedule = false;
 
-		$scope.populateFavorites = function (arr) {
-			$scope.favoriteArtists = [];
-			arr.forEach((el, i) => {
-				if (el.listened === true && el.rating >= 3) {
-					$scope.favoriteArtists.push(el);
-				}
-			})
-			$scope.showSchedule = true;
-		}
-
 		// ***********************
 		// MANAGING VISIBILITY
 		// ***********************
@@ -83,6 +73,17 @@ app.controller("UserCtrl", [
 			} else {
 				return $scope.listFilter = filter;
 			}
+		}
+
+		// loads schedule view with artists a user has rated 3+ stars
+		$scope.populateFavorites = function (arr) {
+			$scope.favoriteArtists = [];
+			arr.forEach((el, i) => {
+				if (el.listened === true && el.rating >= 3) {
+					$scope.favoriteArtists.push(el);
+				}
+			})
+			$scope.showSchedule = true;
 		}
 
 		// ***********************
@@ -113,7 +114,6 @@ app.controller("UserCtrl", [
 				err => console.log(err)
 			).then(
 				spotifyData => { // used to retrieve artist's ID for subsequent spotify requests
-					console.log('artist', spotifyData.artists.items[0]); // ???: can i move all ID retrieval to factory?
 					let id = spotifyData.artists.items[0].id; // grabs ID of artist for future spotify requests
 					$scope.artistID = spotifyData.artists.items[0].id;  // save for top tracks href
 					showRelatedArtists(id);
@@ -178,7 +178,7 @@ app.controller("UserCtrl", [
 		}
 
 		// ***********************
-		// RETRIEVING SPOTIFY DATA
+		// DISPLAYING SPOTIFY DATA
 		// ***********************
 
 		let showRelatedArtists = (id) => {
@@ -186,11 +186,10 @@ app.controller("UserCtrl", [
 			spotify.getRelatedArtists(id)
 			.then(
 				relatedArtists => {
-					for (let i = 0; i < 4; i++) { // four related artists
+					for (let i = 0; i < 4; i++) { // get four related artists
 						$scope.relatedArtists.push(relatedArtists.artists[i].name);
 					}
 					$scope.relatedArtists = $scope.relatedArtists.join(', ');
-					console.log('related artists', $scope.relatedArtists);
 				},
 				err => console.log(err)
 			)
@@ -223,20 +222,17 @@ app.controller("UserCtrl", [
 			spotify.getTopTracks(id)
 			.then(
 				tracks => {
-					for (let i = 0; i < 3; i++) { // show top three
+					for (let i = 0; i < 3; i++) { // show top three tracks
 						let topTrack = {
 							name: "",
 							uri: "",
 							id: ""
 						}
-						console.log(tracks.tracks);
 						topTrack.name = tracks.tracks[i].name;
 						topTrack.uri = tracks.tracks[i].uri;
 						topTrack.id = tracks.tracks[i].id;
 						$scope.topTracks.push(topTrack);
 					}
-					// embeds top track inside a widget
-					// $scope.embedURL = `https://embed.spotify.com/?uri=${tracks.tracks[0].uri}`;
 				},
 				err => console.log(err)
 			)

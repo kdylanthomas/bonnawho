@@ -6,14 +6,24 @@ app.controller('LandingCtrl', [
 
 	function($scope, getLineup) {
 
+		// ***********************
+		// COUNTDOWN
+		// ***********************
+
 		let bonnarooDate = new Date("6/8/2016");
 		let today = new Date();
 		let timeDiff = Math.abs(today.getTime() - bonnarooDate.getTime());
 		$scope.daysUntilBonnaroo = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
+
+		// ***********************
+		// RANDOM ARTIST DISPLAY
+		// ***********************
+
 		$scope.lineup = [];
 		$scope.randomArtists = [];
-		// function that randomly gets ~3-4 artists from lineup and pushes to $scope.randomArtists
+
+		// get 4 random artists from lineup and push to $scope.randomArtists
 		getLineup()
 		.then(
 			lineup => {
@@ -33,9 +43,7 @@ app.controller('LandingCtrl', [
 			let min = 0;
 			while ($scope.randomArtists.length < 4) {
 				let randomIndex = Math.floor(Math.random() * (max - min + 1)) + min;
-				console.log($scope.lineup[randomIndex]);
 				$scope.randomArtists.push($scope.lineup[randomIndex]);
-				console.log(randomIndex);
 			}
 		}
 
