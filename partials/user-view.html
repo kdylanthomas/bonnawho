@@ -7,14 +7,14 @@
 		<a href="" ng-click="switchView()">Show All</a> |
 		<a href="" ng-click="switchView({listened: false})">Your Queue</a> |
 		<a href="" ng-click="switchView({listened: true})">Your Listened Artists</a> |
-		<a href="" ng-click="populateFavorites(currentUserArtists)">Your Schedule</a>
+		<a href="" ng-click="populateFavorites(currentUserArtists)">Your Schedule</a> 
 	</div>
 
 
 	<!-- USER'S SAVED ARTISTS -->
 	<div ng-show="showSchedule===false">
 
-		<div class="no-matches">
+		<div class="no-matches" ng-cloak>
 			<p ng-show="!filteredArtists.length">Bummer! You don't have any artists saved to this list.</p>
 			<button class="btn lineup-button"  ng-show="!filteredArtists.length" onclick="location.href='#/lineup'">Find More Artists</button>
 		</div>
