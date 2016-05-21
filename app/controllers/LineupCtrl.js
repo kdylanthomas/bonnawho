@@ -25,6 +25,8 @@ app.controller("LineupCtrl", [
 			listened: false,
 			rating: 0,
 			day: "",
+			start: "",
+			end: "",
 			comments: ""
 		}
 
@@ -86,6 +88,8 @@ app.controller("LineupCtrl", [
 				data => {
 					artistToAdd.artistName = data.artist;
 					artistToAdd.day = data.day;
+					artistToAdd.start = data.start;
+					artistToAdd.end = data.end;
 					$scope.findUserList(); // after getting all data from firebase, find current user's list
 				},
 				err => console.log(err)
