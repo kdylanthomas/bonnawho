@@ -5,18 +5,18 @@
 			<div class="col-md-4 col-md-offset-2">
 				<h3 class="day-header">Thursday</h3>
 					<div class="artist-by-day" ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Thursday'})">
-					<h4>{{artist.artistName}}</h4>
-					<h5>{{artist.start}} - {{artist.end}}</h5>
-				</div>
+						<h4>{{artist.artistName}}</h4>
+						<h5>{{artist.start}} - {{artist.end}}</h5>
+					</div>
 					<p class="artist-by-day" ng-show="!filteredArtists.length">You haven't liked any Thursday artists yet :(</p>
 			</div>
 
 			<div class="col-md-4 schedule-day">
 				<h3 class="day-header">Friday</h3>
 					<div class="artist-by-day" ng-repeat="artist in filteredArtists = (favoriteArtists | filter: {day: 'Friday'})">
-					<h4>{{artist.artistName}}</h4>
-					<h5>{{artist.start}} - {{artist.end}}</h5>
-				</div>
+						<h4>{{artist.artistName}}</h4>
+						<h5>{{artist.start}} - {{artist.end}}</h5>
+					</div>
 					<p class="artist-by-day" ng-show="!filteredArtists.length">You haven't liked any Friday artists yet :(</p>
 			</div>
 		</div>
