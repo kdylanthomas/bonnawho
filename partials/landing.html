@@ -1,6 +1,6 @@
 <section>
 	<div ng-include="'partials/navbar.html'" ng-init="checkPath()"></div>
-	<h2 class="countdown">{{ daysUntilBonnaroo }} days until Bonnaroo!</h2>
+	<h2 ng-if="daysUntilBonnaroo > 0" class="countdown">{{ daysUntilBonnaroo }} days until Bonnaroo!</h2>
 
 	<div class="row">
 
