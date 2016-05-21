@@ -20,9 +20,20 @@ app.controller("UserCtrl", [
 		// takes hh:mm:ss time format from firebase, converts military hours, and returns h:mm
 		let createCommonTimeString = (date) => {
 			var parsedDate = date.split(":");
-			if (parsedDate[0] > 12) parsedDate[0] -= 12;
-			else if (parsedDate[0] === "00") parsedDate[0] = 12;
-			else if (parsedDate[0] < 10) parsedDate[0] = parsedDate[0].slice(1,2);
+			if (parsedDate[0] > 12) {
+				parsedDate[0] -= 12;
+				parsedDate[1] += "pm";
+			}
+			else if (parsedDate[0] === "00") {
+				parsedDate[0] = 12;
+				parsedDate[1] += "am";
+			}
+			else if (parsedDate[0] < 12) {
+				if (parsedDate[0] < 10) {
+					parsedDate[0] = parsedDate[0].slice(1,2);
+				}
+				parsedDate[1] += "am";
+			}
 			return parsedDate[0] + ":" + parsedDate[1];
 		}
 
