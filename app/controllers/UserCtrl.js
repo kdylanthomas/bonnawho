@@ -17,6 +17,26 @@ app.controller("UserCtrl", [
 		let user = authenticate.getCurrentUser(); // holds firebase authData object
 		let list; // holds unique firebase-generated key that corresponds to a user's list
 
+		// takes hh:mm:ss time format from firebase, converts military hours, and returns h:mm
+		let createCommonTimeString = (date) => {
+			var parsedDate = date.split(":");
+			if (parsedDate[0] > 12) {
+				parsedDate[0] -= 12;
+				parsedDate[1] += "pm";
+			}
+			else if (parsedDate[0] === "00") {
+				parsedDate[0] = 12;
+				parsedDate[1] += "am";
+			}
+			else if (parsedDate[0] < 12) {
+				if (parsedDate[0] < 10) {
+					parsedDate[0] = parsedDate[0].slice(1,2);
+				}
+				parsedDate[1] += "am";
+			}
+			return parsedDate[0] + ":" + parsedDate[1];
+		}
+
 		// ***********************
 		// INITIAL POPULATE PAGE
 		// ***********************
@@ -83,7 +103,10 @@ app.controller("UserCtrl", [
 			$scope.favoriteArtists = [];
 			arr.forEach((el, i) => {
 				if (el.listened === true && el.rating >= 3) {
-					$scope.favoriteArtists.push(el);
+					var favoriteArtist = el;
+					favoriteArtist.start = createCommonTimeString(el.start);
+					favoriteArtist.end = createCommonTimeString(el.end);
+					$scope.favoriteArtists.push(favoriteArtist);
 				}
 			})
 			$scope.showSchedule = true;
