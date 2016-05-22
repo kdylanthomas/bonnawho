@@ -24,8 +24,22 @@
 			<button id="login" class="btn login-btn" ng-click="login(user)">Log In</button>
 			<button id="register" class="btn login-btn" ng-click="register(user)">Register</button>
 			<div class="guest-login">
-				<a ng-click="login({email: 'a@a.com', password: 'a'})">or, proceed as guest</a>
-			</div>
+				<a data-toggle="modal" data-target="#modal--guest-info">or, proceed as guest</a>
+				<!-- GUEST INFO MODAL -->
+				<div class="modal fade" id="modal--guest-info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-body guest-msg">
+				        <h2>Hi there! Just so you know...</h2>
+				        <p>As a guest, you'll be viewing a sample user's saved artists. You have the ability to add or remove artists, listen to artists through Spotify, and add ratings or comments. Feel free to make any changes you like, but know that your list will not be saved when you next visit the site. If you'd like to make your own list that you can save to your account, be sure to register!</p>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-primary" data-dismiss="modal"  ng-click="login({email: 'a@a.com', password: 'a'})">Got it!</button>
+				      </div>
+				    </div>
+				  </div>
+				</div> <!-- end modal -->
+			</div> <!-- end guest login div -->
 		</div>
 	</div>
 
