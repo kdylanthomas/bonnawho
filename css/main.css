@@ -242,6 +242,13 @@ h4 {
     margin-top: 2%;
     color: #000;
     background-color: #b4ffb7; }
+  .inputs .guest-login {
+    padding-top: 1%; }
+  .inputs a {
+    text-decoration: none;
+    color: #fff; }
+  .inputs a:hover {
+    color: #b4ffb7; }
 
 body {
   background: url("../images/main-background.png");

@@ -23,6 +23,9 @@
 			</div>
 			<button id="login" class="btn login-btn" ng-click="login(user)">Log In</button>
 			<button id="register" class="btn login-btn" ng-click="register(user)">Register</button>
+			<div class="guest-login">
+				<a ng-click="login({email: 'a@a.com', password: 'a'})">or, proceed as guest</a>
+			</div>
 		</div>
 	</div>
 

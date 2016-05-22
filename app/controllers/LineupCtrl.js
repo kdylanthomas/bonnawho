@@ -18,6 +18,8 @@ app.controller("LineupCtrl", [
 		let list; // holds unique firebase-generated key that corresponds to a user's list
 		let chosenArtist = "";
 
+		$scope.displayGuestMessage = false;
+
 		// empty object template for adding an artist to a user list
 		let artistToAdd = {
 			artistID: "",
@@ -40,6 +42,11 @@ app.controller("LineupCtrl", [
 			return arr;
 		}
 
+		// let this trigger a modal with info for a guest
+		if (user.uid === "23aa05d9-85df-47ab-86dd-a9ab0cbadc19") {
+			$scope.displayGuestMessage = true;
+		}
+
 		// ***********************
 		// INITIAL POPULATE PAGE
 		// ***********************
@@ -60,6 +67,7 @@ app.controller("LineupCtrl", [
 			},
 			error => console.log(error)
 		);
+
 
 		// store a user's already-added artists, if there are any
 		$scope.userSavedArtists = [];
