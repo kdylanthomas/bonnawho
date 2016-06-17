@@ -18,8 +18,7 @@ app.config(['$routeProvider',
     $routeProvider.
       when('/lineup', {
         templateUrl: 'partials/lineup-view.html',
-        controller: 'LineupCtrl',
-        resolve: { isAuth }
+        controller: 'LineupCtrl'
       }).
       when('/welcome', {
         templateUrl: 'partials/landing.html',
@@ -28,8 +27,7 @@ app.config(['$routeProvider',
       }).
       when('/user', {
         templateUrl: 'partials/user-view.html',
-        controller: 'UserCtrl',
-        resolve: { isAuth }
+        controller: 'UserCtrl'
       }).
       when('/login', {
         templateUrl: 'partials/login-view.html',

@@ -243,7 +243,8 @@ h4 {
     color: #000;
     background-color: #b4ffb7; }
   .inputs .guest-login {
-    padding-top: 1%; }
+    padding-top: 1%;
+    cursor: pointer; }
   .inputs a {
     text-decoration: none;
     color: #fff; }

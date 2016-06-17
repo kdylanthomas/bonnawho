@@ -10,7 +10,8 @@ app.controller('LandingCtrl', [
 		// COUNTDOWN
 		// ***********************
 
-		let bonnarooDate = new Date("6/8/2016");
+		// let bonnarooDate = new Date("6/8/2016"); <-- deprecated
+		let bonnarooDate = new Date("6/7/2017");
 		let today = new Date();
 		let timeDiff = Math.abs(today.getTime() - bonnarooDate.getTime());
 		$scope.daysUntilBonnaroo = Math.ceil(timeDiff / (1000 * 3600 * 24));
